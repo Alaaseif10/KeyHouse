@@ -4,6 +4,8 @@
     {
         public int Id { get; set; } 
         public string City_Name { get; set; }
+
+        //Relations
         public virtual Governments? Governments { get; set; }
         public virtual ICollection<Blocks> Blocks { get; set; } = new List<Blocks>();
     }
