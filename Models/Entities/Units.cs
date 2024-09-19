@@ -22,10 +22,10 @@ namespace KeyHouse.Models.Entities
         // Relations
         public virtual Blocks? Blocks { get; set; }
         public virtual Agencies? Agencies { get; set; }
-        public virtual ICollection<Users> Users { get; set; } = new List<Users>();
-        public virtual ICollection<Images> Images { get; set; } = new List<Images>();
+        //public virtual ICollection<Users> Users { get; set; } = new List<Users>();
+        public virtual ICollection<Images>? Images { get; set; } = new List<Images>();
 
-
+        public virtual ICollection<Interest>? Interests { get; set; } = new List<Interest>();
 
 
         //// 

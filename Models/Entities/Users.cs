@@ -12,7 +12,11 @@
         public int status {get; set; } // 1 => active , 2 => not active 
 
         //Relations
-        public virtual ICollection<Units> Units { get; set; } = new List<Units>();
+
+        //public virtual ICollection<Units> Units { get; set; } = new List<Units>();
+        public virtual ICollection<Interest>? Interests { get; set; } = new List<Interest>();
+        public virtual ICollection<BenefitsServices>? BenefitsServices { get; set; } = new List<BenefitsServices>();
+
 
 
     }

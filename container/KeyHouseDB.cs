@@ -7,8 +7,13 @@ namespace KeyHouse.container
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = "";
+            string connectionString = "Server=DESKTOP-A1088VT\\ADMIN;Database=KeyHouseDB;User Id=sa;password=Admin123;Integrated security=True;Encrypt=False";
+
             optionsBuilder.UseSqlServer(connectionString);
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Interest>().HasKey(td => new { td.UsersId, td.UnitsId });
         }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Agencies> Agencies { get; set; }
