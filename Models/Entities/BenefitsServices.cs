@@ -7,7 +7,7 @@
 
         // pending 
         // benefits type (category) => need another table or not divide them into categories 
-        public virtual ICollection<Users>? Users { get; set; } = new List<Users>();
+        public virtual ICollection<Units>? Units { get; set; } = new List<Units>();
 
     }
 }

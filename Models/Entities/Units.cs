@@ -26,6 +26,7 @@ namespace KeyHouse.Models.Entities
         public virtual ICollection<Images>? Images { get; set; } = new List<Images>();
 
         public virtual ICollection<Interest>? Interests { get; set; } = new List<Interest>();
+        public virtual ICollection<BenefitsServices>? BenefitsServices { get; set; } = new List<BenefitsServices>();
 
 
         //// 

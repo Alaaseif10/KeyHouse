@@ -12,6 +12,26 @@ namespace KeyHouse.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Agencies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Agency_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Agency_Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Agency_Status = table.Column<int>(type: "int", nullable: false),
+                    NumCompany = table.Column<int>(type: "int", nullable: false),
+                    Agency_Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Agency_Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Agency_Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    logo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agencies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BenefitsServices",
                 columns: table => new
                 {
@@ -38,6 +58,27 @@ namespace KeyHouse.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Contracts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Contract_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Start_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    End_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AgenciesId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contracts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contracts_Agencies_AgenciesId",
+                        column: x => x.AgenciesId,
+                        principalTable: "Agencies",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -49,11 +90,17 @@ namespace KeyHouse.Migrations
                     User_Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     User_Type = table.Column<int>(type: "int", nullable: false),
                     Creation_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    status = table.Column<int>(type: "int", nullable: false)
+                    status = table.Column<int>(type: "int", nullable: false),
+                    AgenciesId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Agencies_AgenciesId",
+                        column: x => x.AgenciesId,
+                        principalTable: "Agencies",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -76,56 +123,6 @@ namespace KeyHouse.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Agencies",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Agency_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Agency_Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Agency_Status = table.Column<int>(type: "int", nullable: false),
-                    NumCompany = table.Column<int>(type: "int", nullable: false),
-                    Agency_Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Agency_Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Agency_Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    logo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UsersId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Agencies", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Agencies_Users_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BenefitsServicesUsers",
-                columns: table => new
-                {
-                    BenefitsServicesId = table.Column<int>(type: "int", nullable: false),
-                    UsersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BenefitsServicesUsers", x => new { x.BenefitsServicesId, x.UsersId });
-                    table.ForeignKey(
-                        name: "FK_BenefitsServicesUsers_BenefitsServices_BenefitsServicesId",
-                        column: x => x.BenefitsServicesId,
-                        principalTable: "BenefitsServices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BenefitsServicesUsers_Users_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Blocks",
                 columns: table => new
                 {
@@ -141,27 +138,6 @@ namespace KeyHouse.Migrations
                         name: "FK_Blocks_Cities_CitiesId",
                         column: x => x.CitiesId,
                         principalTable: "Cities",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Contracts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Contract_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Start_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    End_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AgenciesId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contracts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Contracts_Agencies_AgenciesId",
-                        column: x => x.AgenciesId,
-                        principalTable: "Agencies",
                         principalColumn: "Id");
                 });
 
@@ -197,6 +173,30 @@ namespace KeyHouse.Migrations
                         column: x => x.BlocksId,
                         principalTable: "Blocks",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BenefitsServicesUnits",
+                columns: table => new
+                {
+                    BenefitsServicesId = table.Column<int>(type: "int", nullable: false),
+                    UnitsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BenefitsServicesUnits", x => new { x.BenefitsServicesId, x.UnitsId });
+                    table.ForeignKey(
+                        name: "FK_BenefitsServicesUnits_BenefitsServices_BenefitsServicesId",
+                        column: x => x.BenefitsServicesId,
+                        principalTable: "BenefitsServices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BenefitsServicesUnits_Units_UnitsId",
+                        column: x => x.UnitsId,
+                        principalTable: "Units",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,14 +245,9 @@ namespace KeyHouse.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Agencies_UsersId",
-                table: "Agencies",
-                column: "UsersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BenefitsServicesUsers_UsersId",
-                table: "BenefitsServicesUsers",
-                column: "UsersId");
+                name: "IX_BenefitsServicesUnits_UnitsId",
+                table: "BenefitsServicesUnits",
+                column: "UnitsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blocks_CitiesId",
@@ -288,13 +283,18 @@ namespace KeyHouse.Migrations
                 name: "IX_Units_BlocksId",
                 table: "Units",
                 column: "BlocksId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_AgenciesId",
+                table: "Users",
+                column: "AgenciesId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BenefitsServicesUsers");
+                name: "BenefitsServicesUnits");
 
             migrationBuilder.DropTable(
                 name: "Contracts");
@@ -312,13 +312,13 @@ namespace KeyHouse.Migrations
                 name: "Units");
 
             migrationBuilder.DropTable(
-                name: "Agencies");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Blocks");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Agencies");
 
             migrationBuilder.DropTable(
                 name: "Cities");

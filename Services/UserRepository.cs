@@ -16,12 +16,17 @@ namespace KeyHouse.Services
         }
         public Users GetUserById(int id)
         {
-            return context.Users.SingleOrDefault(s=>s.Id == id);
+            return context.Users.Include(s => s.Agencies).SingleOrDefault(s=>s.Id == id);
         }
 
         public Users ValidateUserByEmail(string email, string password)
         {
-            return context.Users.SingleOrDefault(s => s.Uesr_Email == email && s.User_Password== password);
+            return context.Users.Include(s=>s.Agencies).SingleOrDefault(s => s.Uesr_Email == email && s.User_Password== password);
+        }
+
+        public Users ValidateAgencyByStatus(int agency_Status)
+        {
+            return context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Agencies.Agency_Status == agency_Status);
         }
 
         public int InsertUser(Users user)
@@ -32,7 +37,7 @@ namespace KeyHouse.Services
 
         public int UpdateUser(int id, Users user)
          {
-            Users oldUser = context.Users.SingleOrDefault(s => s.Id == id);
+            Users oldUser = context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Id == id);
             oldUser.User_Name = user.User_Name;
             oldUser.Uesr_Email = user.Uesr_Email;
             oldUser.User_Password = user.User_Password;
@@ -51,5 +56,7 @@ namespace KeyHouse.Services
             return context.SaveChanges();
         }
 
-    }
+
+
+}
 }

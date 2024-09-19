@@ -22,19 +22,19 @@ namespace KeyHouse.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BenefitsServicesUsers", b =>
+            modelBuilder.Entity("BenefitsServicesUnits", b =>
                 {
                     b.Property<int>("BenefitsServicesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersId")
+                    b.Property<int>("UnitsId")
                         .HasColumnType("int");
 
-                    b.HasKey("BenefitsServicesId", "UsersId");
+                    b.HasKey("BenefitsServicesId", "UnitsId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UnitsId");
 
-                    b.ToTable("BenefitsServicesUsers");
+                    b.ToTable("BenefitsServicesUnits");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Agencies", b =>
@@ -71,16 +71,11 @@ namespace KeyHouse.Migrations
                     b.Property<int>("NumCompany")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UsersId")
-                        .HasColumnType("int");
-
                     b.Property<string>("logo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsersId");
 
                     b.ToTable("Agencies");
                 });
@@ -297,6 +292,9 @@ namespace KeyHouse.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AgenciesId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Creation_date")
                         .HasColumnType("datetime2");
 
@@ -323,10 +321,12 @@ namespace KeyHouse.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AgenciesId");
+
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BenefitsServicesUsers", b =>
+            modelBuilder.Entity("BenefitsServicesUnits", b =>
                 {
                     b.HasOne("KeyHouse.Models.Entities.BenefitsServices", null)
                         .WithMany()
@@ -334,20 +334,11 @@ namespace KeyHouse.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("KeyHouse.Models.Entities.Users", null)
+                    b.HasOne("KeyHouse.Models.Entities.Units", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("UnitsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("KeyHouse.Models.Entities.Agencies", b =>
-                {
-                    b.HasOne("KeyHouse.Models.Entities.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UsersId");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Blocks", b =>
@@ -418,6 +409,15 @@ namespace KeyHouse.Migrations
                     b.Navigation("Agencies");
 
                     b.Navigation("Blocks");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Users", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Agencies", "Agencies")
+                        .WithMany()
+                        .HasForeignKey("AgenciesId");
+
+                    b.Navigation("Agencies");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Agencies", b =>

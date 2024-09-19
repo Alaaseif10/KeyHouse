@@ -12,11 +12,14 @@ namespace KeyHouse.Services
 
         public Users ValidateUserByEmail(string email, string password);
 
+        public Users ValidateAgencyByStatus(int agency_Status);
+
         public int InsertUser(Users user);
 
         public int UpdateUser(int id, Users user);
 
         public int DeleteUser(int id);
+
 
     }
 }

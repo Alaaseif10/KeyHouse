@@ -13,7 +13,7 @@
         public required string logo { get; set; } // binary or string 
 
         // Relations
-        public virtual Users? Users { get; set; }
+        //public virtual Users? Users { get; set; }
         public virtual ICollection<Contracts> Contracts { get; set; } = new List<Contracts>();
         public virtual ICollection<Units> Units { get; set; } = new List<Units>();
 
