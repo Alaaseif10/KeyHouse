@@ -7,7 +7,7 @@ namespace KeyHouse.container
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = "Server=DESKTOP-A1088VT\\ADMIN;Database=KeyHouseDB;User Id=sa;password=Admin123;Integrated security=True;Encrypt=False";
+            string connectionString = "Server=.;Database=KeyHouseDB;Integrated security=True;Encrypt=False";
 
             optionsBuilder.UseSqlServer(connectionString);
         }
