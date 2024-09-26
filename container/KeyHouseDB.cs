@@ -1,19 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using KeyHouse.Models.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace KeyHouse.container
 {
-    public class KeyHouseDB : DbContext
+    public class KeyHouseDB : IdentityDbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            string connectionString = "Server=.;Database=KeyHouseDB;Integrated security=True;Encrypt=False";
+        public KeyHouseDB(){}
 
-            optionsBuilder.UseSqlServer(connectionString);
-        }
+        public KeyHouseDB(DbContextOptions options): base(options) { }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    string connectionString = "Server=DESKTOP-A1088VT\\ADMIN;Database=KeyHouseDB;User Id=sa;password=Admin123;Integrated security=True;Encrypt=False";
+        // // string connectionString = "Server=.;Database=KeyHouseDB;Integrated security=True;Encrypt=False";
+
+        //    optionsBuilder.UseSqlServer(connectionString);
+        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Interest>().HasKey(td => new { td.UsersId, td.UnitsId });
+            base.OnModelCreating(modelBuilder);
+            //modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
         }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Agencies> Agencies { get; set; }

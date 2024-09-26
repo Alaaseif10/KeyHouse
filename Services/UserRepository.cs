@@ -7,8 +7,12 @@ namespace KeyHouse.Services
     
     public class UserRepository : IUserRepository
     {
-        KeyHouseDB context = new KeyHouseDB();
+        KeyHouseDB context; //= new KeyHouseDB();
 
+        public UserRepository(KeyHouseDB _context)
+        {
+            context=_context;
+        }
         public List<Users> GetAllUsers()
         {
             List<Users> users = context.Users.ToList();

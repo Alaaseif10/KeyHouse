@@ -1,3 +1,7 @@
+using KeyHouse.container;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace KeyHouse
 {
     public class Program
@@ -8,6 +12,10 @@ namespace KeyHouse
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
+            builder.Services.AddDbContext<KeyHouseDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Local")));
+
 
             var app = builder.Build();
 

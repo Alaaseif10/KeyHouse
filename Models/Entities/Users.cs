@@ -1,4 +1,6 @@
-﻿namespace KeyHouse.Models.Entities
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace KeyHouse.Models.Entities
 {
     public class Users
     {

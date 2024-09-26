@@ -2,7 +2,7 @@
 
 namespace KeyHouse.Controllers
 {
-    public class KeyHouseController : Controller
+    public class HomeController : Controller
     {
         public IActionResult Index()
         {
