@@ -64,11 +64,11 @@ namespace KeyHouse.Migrations
                     b.Property<int>("Agency_Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumCompany")
-                        .HasColumnType("int");
+                    b.Property<string>("NumCompany")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("logo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

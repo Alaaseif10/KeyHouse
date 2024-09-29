@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Views\KeyHouse\" />
+    <Folder Include="wwwroot\logo\" />
   </ItemGroup>
 
 </Project>

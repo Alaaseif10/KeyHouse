@@ -14,7 +14,7 @@ namespace KeyHouse
             builder.Services.AddControllersWithViews();
 
 
-            builder.Services.AddDbContext<KeyHouseDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Local")));
+           // builder.Services.AddDbContext<KeyHouseDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Local")));
 
 
             var app = builder.Build();

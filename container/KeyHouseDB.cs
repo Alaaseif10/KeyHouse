@@ -9,10 +9,10 @@ namespace KeyHouse.container
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = "Server=.;Database=KeyHouseDB;Integrated security=True;Encrypt=False";
+            string connectionString = "Server=ALAASEIF_IMP\\SQLEXPRESS;Database= KeyHouseDB ;User Id= Admin;Password = P@ssw0rd; Trusted_Connection=True; TrustServerCertificate = True;";
 
-        //    optionsBuilder.UseSqlServer(connectionString);
-        //}
+            optionsBuilder.UseSqlServer(connectionString);
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Interest>().HasKey(td => new { td.UsersId, td.UnitsId });
