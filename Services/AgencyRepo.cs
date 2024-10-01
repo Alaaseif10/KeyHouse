@@ -24,13 +24,11 @@ namespace KeyHouse.services
         {
             var fileName = agencyData.logo.FileName;
             var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/logo", fileName);
-
             // Save the file to the path
             using (var stream = new FileStream(imagePath, FileMode.Create))
             {
                 agencyData.logo.CopyToAsync(stream);
             }
-
             var Agency = new Agencies
             {
                 Agency_Name = agencyData.Agency_Name,

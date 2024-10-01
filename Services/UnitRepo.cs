@@ -2,6 +2,7 @@
 using KeyHouse.Models.Entities;
 using KeyHouse.ModelView;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace KeyHouse.Services
 {
@@ -15,10 +16,58 @@ namespace KeyHouse.Services
         /// Insert Unit
         /// </summary>
         /// <param name="units"></param>
-        public void InsertUnits(Units units)
-        { 
-            context.Units.Add(units);
-            context.SaveChanges();  
+        public void InsertUnits(UnitsDetailsModelView Unit)
+        {
+            // add in unit table
+            var InsertedUnit = new Units
+            {
+                Images = new List<Images>(),
+                Type_Unit = Unit.Type_Unit,
+                Unit_Title = Unit.Unit_Title,
+                Type_Rent = Unit.Type_Rent,
+                Unit_Description = Unit.Unit_Description,
+                Under_constracting_Status = Unit.Under_constracting_Status,
+                Num_Rooms = Unit.Num_Rooms,
+                Num_Bathrooms = Unit.Num_Bathrooms,
+                Area = Unit.Area,
+                Price = Unit.Price,
+                Furnishing = Unit.Furnishing,
+                Added_Date = DateTime.Now,
+                Status = 1,
+                Blocks = context.Blocks.SingleOrDefault(s => s.Id == Unit.BlockId)
+            };
+
+            // add in benefitserviceswunit
+
+            if (Unit.SelectedServices != null)
+            {
+                foreach (var serviceId in Unit.SelectedServices)
+                {
+                    var service = context.BenefitsServices.Find(serviceId);
+                    InsertedUnit.BenefitsServices.Add(service);
+                    
+                }
+            }
+
+            if (Unit.Images != null)
+            {
+                foreach (var Img in Unit.Images)
+                {
+                    var fileName = Img.FileName;
+                    var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/unitImages", fileName);
+                    //// Save the file to the path
+                    using (var stream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        Img.CopyToAsync(stream);
+                    }
+
+                    InsertedUnit.Images.Add(new Images 
+                    { Img_Path = $"/unitImages/{fileName}", Units = InsertedUnit });
+                }
+            }
+            context.Units.Add(InsertedUnit);
+            context.SaveChanges();
+            
         }
         /// <summary>
         ///  Edit Unit

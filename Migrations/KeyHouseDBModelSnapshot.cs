@@ -22,6 +22,21 @@ namespace KeyHouse.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AgenciesUnits", b =>
+                {
+                    b.Property<int>("AgenciesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnitsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AgenciesId", "UnitsId");
+
+                    b.HasIndex("UnitsId");
+
+                    b.ToTable("AgenciesUnits");
+                });
+
             modelBuilder.Entity("BenefitsServicesUnits", b =>
                 {
                     b.Property<int>("BenefitsServicesId")
@@ -236,9 +251,6 @@ namespace KeyHouse.Migrations
                     b.Property<DateTime>("Added_Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("AgenciesId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Area")
                         .HasColumnType("int");
 
@@ -248,10 +260,10 @@ namespace KeyHouse.Migrations
                     b.Property<bool>("Furnishing")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Num_Bathrooms")
+                    b.Property<int?>("Num_Bathrooms")
                         .HasColumnType("int");
 
-                    b.Property<int>("Num_Rooms")
+                    b.Property<int?>("Num_Rooms")
                         .HasColumnType("int");
 
                     b.Property<float>("Price")
@@ -260,20 +272,25 @@ namespace KeyHouse.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Under_constracting_Status")
+                    b.Property<string>("Type_Rent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type_Unit")
                         .HasColumnType("int");
+
+                    b.Property<string>("Under_constracting_Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Unit_Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Unit_Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Unit_Title")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AgenciesId");
 
                     b.HasIndex("BlocksId");
 
@@ -520,6 +537,21 @@ namespace KeyHouse.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AgenciesUnits", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Agencies", null)
+                        .WithMany()
+                        .HasForeignKey("AgenciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KeyHouse.Models.Entities.Units", null)
+                        .WithMany()
+                        .HasForeignKey("UnitsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BenefitsServicesUnits", b =>
                 {
                     b.HasOne("KeyHouse.Models.Entities.BenefitsServices", null)
@@ -592,15 +624,9 @@ namespace KeyHouse.Migrations
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Units", b =>
                 {
-                    b.HasOne("KeyHouse.Models.Entities.Agencies", "Agencies")
-                        .WithMany("Units")
-                        .HasForeignKey("AgenciesId");
-
                     b.HasOne("KeyHouse.Models.Entities.Blocks", "Blocks")
                         .WithMany()
                         .HasForeignKey("BlocksId");
-
-                    b.Navigation("Agencies");
 
                     b.Navigation("Blocks");
                 });
@@ -668,8 +694,6 @@ namespace KeyHouse.Migrations
             modelBuilder.Entity("KeyHouse.Models.Entities.Agencies", b =>
                 {
                     b.Navigation("Contracts");
-
-                    b.Navigation("Units");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Cities", b =>

@@ -2,6 +2,7 @@
 using KeyHouse.Models.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace KeyHouse.container
 {
@@ -9,14 +10,15 @@ namespace KeyHouse.container
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = "Server=ALAASEIF_IMP\\SQLEXPRESS;Database= KeyHouseDB ;User Id= Admin;Password = P@ssw0rd; Trusted_Connection=True; TrustServerCertificate = True;";
-
-            optionsBuilder.UseSqlServer(connectionString);
+            string connectionString = '';
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Interest>().HasKey(td => new { td.UsersId, td.UnitsId });
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Units>().Property(p => p.Type_Rent).HasConversion<string>();
+            modelBuilder.Entity<Units>().Property(p => p.Under_constracting_Status).HasConversion<string>();
             //modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
         }
         public virtual DbSet<Users> Users { get; set; }
