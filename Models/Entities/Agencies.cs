@@ -3,9 +3,9 @@
     public class Agencies : Users
     {
         public int Id { get; set; }
-        public  string Agency_Name { get; set; }
-        public  string Agency_Description { get; set; }
-        public int Agency_Status { get; set; } // 1=> pending , 2=> rejected , 3=> accepted
+        public  string AgencyName { get; set; }
+        public  string AgencyDescription { get; set; }
+        public int AgencyStatus { get; set; } // 1=> pending , 2=> rejected , 3=> accepted
         public int NumCompany {  get; set; }
         //public  string AgencyContactEmail { get; set; }
         //public  string AgencyContactPhone { get; set; }

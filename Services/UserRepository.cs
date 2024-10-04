@@ -30,7 +30,7 @@ namespace KeyHouse.Services
 
         public Users ValidateAgencyByStatus(int agency_Status)
         {
-            return context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Agencies.Agency_Status == agency_Status);
+            return context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Agencies.AgencyStatus == agency_Status);
         }
 
         public int InsertUser(Users user)

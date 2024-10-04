@@ -14,7 +14,7 @@ namespace KeyHouse.services
         }
         public List<Agencies> GetFilteredAgencies(int status)
         {
-            return context.Agencies.Where(a => a.Agency_Status == status).ToList();
+            return context.Agencies.Where(a => a.AgencyStatus == status).ToList();
         }
         public Agencies GetAgencyById(int agencyId)
         {
@@ -24,13 +24,13 @@ namespace KeyHouse.services
         { // DEFAULT INSERTION IN AGENCY TABLE ONLY
             var Agency = new Agencies
             {
-                Agency_Name = agencyData.Agency_Name,
-                Agency_Description = agencyData.Agency_Description,
+                AgencyName = agencyData.Agency_Name,
+                AgencyDescription = agencyData.Agency_Description,
                 Email = agencyData.AgencyContactEmail,
                 PhoneNumber = agencyData.AgencyContactPhone,
                 NumCompany = agencyData.NumCompany,
                 //logo = agencyData.logo,
-                Agency_Status = 1
+                AgencyStatus = 1
             };
             var user = new Users
             {
@@ -55,9 +55,9 @@ namespace KeyHouse.services
         public void EditAgencyData(int agencyId, Agencies newData)
         {
             Agencies olddata = context.Agencies.SingleOrDefault(a => a.Id == agencyId);
-            olddata.Agency_Description = newData.Agency_Description;
+            olddata.AgencyDescription = newData.AgencyDescription;
             olddata.Email = newData.Email;
-            olddata.Agency_Name = newData.Agency_Name;
+            olddata.AgencyName = newData.AgencyName;
             olddata.PhoneNumber = newData.PhoneNumber;
             olddata.NumCompany = newData.NumCompany;
             //olddata.logo = newData.logo;
@@ -66,7 +66,7 @@ namespace KeyHouse.services
         public void EditAgencyStatus(int agencyId)
         {
             Agencies olddata = context.Agencies.SingleOrDefault(a => a.Id == agencyId);
-            olddata.Agency_Status = 3;
+            olddata.AgencyStatus = 3;
             context.SaveChanges();
         }
 
