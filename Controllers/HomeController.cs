@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using KeyHouse.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace KeyHouse.Controllers
 {
@@ -6,6 +7,8 @@ namespace KeyHouse.Controllers
     {
         public IActionResult Index()
         {
+            Locations locations = new Locations();
+            //locations.Insertion();
             return View();
         }
     }

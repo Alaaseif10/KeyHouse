@@ -69,7 +69,5 @@ namespace KeyHouse.services
             olddata.AgencyStatus = 3;
             context.SaveChanges();
         }
-
-
     }
 }

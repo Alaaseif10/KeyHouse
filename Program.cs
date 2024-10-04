@@ -1,5 +1,7 @@
 using KeyHouse.Models.Entities;
 using KeyHouse.container;
+using KeyHouse.Models.Entities;
+using KeyHouse.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,6 +42,8 @@ namespace KeyHouse
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+
         }
     }
 }

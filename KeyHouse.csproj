@@ -22,6 +22,16 @@
 
   <ItemGroup>
     <Folder Include="Views\KeyHouse\" />
+    <Folder Include="wwwroot\logo\" />
+    <Folder Include="wwwroot\unitImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="F:\course\depi\training\KeyHouse\Services\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="F:\course\depi\training\KeyHouse\Services\.editorconfig" />
   </ItemGroup>
 
 </Project>

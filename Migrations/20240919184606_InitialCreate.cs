@@ -20,7 +20,7 @@ namespace KeyHouse.Migrations
                     Agency_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Agency_Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Agency_Status = table.Column<int>(type: "int", nullable: false),
-                    NumCompany = table.Column<int>(type: "int", nullable: false),
+                    NumCompany = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Agency_Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Agency_Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Agency_Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
