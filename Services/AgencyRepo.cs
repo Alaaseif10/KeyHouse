@@ -22,39 +22,40 @@ namespace KeyHouse.services
         }
         public void InsertAgencyAndUser(AgencyUserModelView agencyData)
         {
-            var fileName = agencyData.logo.FileName;
-            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/logo", fileName);
-            // Save the file to the path
-            using (var stream = new FileStream(imagePath, FileMode.Create))
-            {
-                agencyData.logo.CopyToAsync(stream);
-            }
-            var Agency = new Agencies
-            {
-                Agency_Name = agencyData.Agency_Name,
-                Agency_Description = agencyData.Agency_Description,
-                AgencyContactEmail = agencyData.AgencyContactEmail,
-                AgencyContactPhone = agencyData.AgencyContactPhone,
-                NumCompany = agencyData.NumCompany,
-                logo = $"/logo/{fileName}",
-                Agency_Status = 1
-            };
-            context.Agencies.Add(Agency);
-            context.SaveChanges();
 
-            var user = new Users
-            {
-                 Uesr_Email= agencyData.AgencyUesrEmail,
-                 User_Password = agencyData.AgencyUserPassword,
-                 User_Name = agencyData.Agency_Name,
-                 User_Phone = agencyData.AgencyContactPhone,
-                 User_Type = 2,
-                 status = 2,
-                 Creation_date = DateTime.Now,
-                 Agencies = context.Agencies.SingleOrDefault(s=> s.NumCompany == agencyData.NumCompany)
-            };
-            context.Users.Add(user);
-            context.SaveChanges();  
+            //var fileName = agencyData.logo.FileName;
+            //var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/logo", fileName);
+            //// Save the file to the path
+            //using (var stream = new FileStream(imagePath, FileMode.Create))
+            //{
+            //    agencyData.logo.CopyToAsync(stream);
+            //}
+            //var Agency = new Agencies
+            //{
+            //    Agency_Name = agencyData.Agency_Name,
+            //    Agency_Description = agencyData.Agency_Description,
+            //    AgencyContactEmail = agencyData.AgencyContactEmail,
+            //    AgencyContactPhone = agencyData.AgencyContactPhone,
+            //    NumCompany = agencyData.NumCompany,
+            //    logo = $"/logo/{fileName}",
+            //    Agency_Status = 1
+            //};
+            //context.Agencies.Add(Agency);
+            //context.SaveChanges();
+
+            //var user = new Users
+            //{
+            //     Uesr_Email= agencyData.AgencyUesrEmail,
+            //     User_Password = agencyData.AgencyUserPassword,
+            //     User_Name = agencyData.Agency_Name,
+            //     User_Phone = agencyData.AgencyContactPhone,
+            //     User_Type = 2,
+            //     status = 2,
+            //     Creation_date = DateTime.Now,
+            //     Agencies = context.Agencies.SingleOrDefault(s=> s.NumCompany == agencyData.NumCompany)
+            //};
+            //context.Users.Add(user);
+            //context.SaveChanges();  
         }
         public void DeleteAgency(int agencyId)
         {
