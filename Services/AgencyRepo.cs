@@ -6,8 +6,14 @@ namespace KeyHouse.services
 {
     public class AgencyRepo
     {
-       KeyHouseDB context = new KeyHouseDB();
-
+        //KeyHouseDB context = new KeyHouseDB();
+        //Start - After Change 
+        KeyHouseDB context;
+        public AgencyRepo(KeyHouseDB _context)
+        {
+            context = _context;
+        }
+        //End
         public List<Agencies> GetAllAgencies()
         {
             return context.Agencies.ToList();

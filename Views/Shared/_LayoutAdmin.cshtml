@@ -45,30 +45,13 @@
             </button>
             <li class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
-                    @* <a href="index.html" class="nav-item nav-link" >Home</a>
-                    <a href="about.html" class="nav-item nav-link active">About</a>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a> *@
+                  
                     <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     <a class="nav-item nav-link active" asp-area="" asp-controller="Home" asp-action="About">About</a>
                     <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                 </div>
                 <a class="btn btn-primary px-3 d-none d-lg-flex" asp-area="" asp-controller="Home" asp-action="Index">Log In</a>
 
-                @*                       <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">property</a>  *@
-                @*                         <div class="dropdown-menu rounded-0 m-0">
-                <a href="property-list.html" class="dropdown-item">Property List</a>
-                <a href="property-type.html" class="dropdown-item">Property Type</a>
-                <a href="property-agent.html" class="dropdown-item">Property Agent</a>
-                </div>
-                </div>
-                *@@*                     <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                <div class="dropdown-menu rounded-0 m-0">
-                <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                <a href="404.html" class="dropdown-item">404 Error</a>
-                </div> *@
-                @* </div> *@
                 <ul class="navbar-nav ms-auto">
                     <!-- Profile Icon Dropdown -->
                     <li class="nav-item dropdown">
@@ -84,13 +67,40 @@
                         </ul>
                     </li>
                 </ul>
-              
-            </div>
+              </li>
         </nav>
     </div>
     <div>
     <!-- end Header -->
-        @RenderBody()
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-auto bg-light sticky-top">
+                    <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top " style="margin-left:10px">
+                        <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
+                            <li>
+                                <a class="nav-link py-3 px-2" title="Agencies" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Agencies" asp-area="" asp-controller="Admin" asp-action="Agencies">
+                                    <i class="bi-people fs-1"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link py-3 px-2" title="Properties" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Properties" asp-area="" asp-controller="Admin" asp-action="Properties">
+                                    <i class="bi-house fs-1"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link py-3 px-2" title="Users" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Users" asp-area="" asp-controller="Admin" asp-action="Users">
+                                    <i class="bi bi-person-check fs-1"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm p-3 min-vh-100">
+                    @RenderBody()
+
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Start footer -->
     <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
