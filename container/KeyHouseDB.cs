@@ -6,12 +6,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace KeyHouse.container
 {
-    public class KeyHouseDB : IdentityDbContext
+    public class KeyHouseDB : IdentityDbContext <Users>
     {
+<<<<<<< HEAD
+        public KeyHouseDB() { }
+        public KeyHouseDB(DbContextOptions<KeyHouseDB> options):base(options) { }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    string connectionString = "Server=.;Database=KeyHouseDB;Integrated security=True;Encrypt=False";
+
+        //    optionsBuilder.UseSqlServer(connectionString);
+        //}
+=======
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = '';
         }
+>>>>>>> 8f60be055eacd2b2fbcc54ec7ac1c4f1f67370d2
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Interest>().HasKey(td => new { td.UsersId, td.UnitsId });

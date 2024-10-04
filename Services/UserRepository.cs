@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KeyHouse.Services
 {
-    
+
     public class UserRepository : IUserRepository
     {
         KeyHouseDB context; //= new KeyHouseDB();
 
         public UserRepository(KeyHouseDB _context)
         {
-            context=_context;
+            context = _context;
         }
         public List<Users> GetAllUsers()
         {
@@ -20,17 +20,17 @@ namespace KeyHouse.Services
         }
         public Users GetUserById(int id)
         {
-            return context.Users.Include(s => s.Agencies).SingleOrDefault(s=>s.Id == id);
+            return context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Id == id);
         }
 
         public Users ValidateUserByEmail(string email, string password)
         {
-            return context.Users.Include(s=>s.Agencies).SingleOrDefault(s => s.Uesr_Email == email && s.User_Password== password);
+            return context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Email == email && s.PasswordHash == password);
         }
 
         public Users ValidateAgencyByStatus(int agency_Status)
         {
-            return context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Agencies.Agency_Status == agency_Status);
+            return context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Agencies.AgencyStatus == agency_Status);
         }
 
         public int InsertUser(Users user)
@@ -40,18 +40,18 @@ namespace KeyHouse.Services
         }
 
         public int UpdateUser(int id, Users user)
-         {
+        {
             Users oldUser = context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Id == id);
-            oldUser.User_Name = user.User_Name;
-            oldUser.Uesr_Email = user.Uesr_Email;
-            oldUser.User_Password = user.User_Password;
-            oldUser.User_Phone = user.User_Phone;
+            oldUser.UserName = user.UserName;
+            oldUser.Email = user.Email;
+            oldUser.PasswordHash = user.PasswordHash;
+            oldUser.PhoneNumber = user.PhoneNumber;
             oldUser.User_Type = user.User_Type;
             //oldUser.Creation_date = user.Creation_date;
             oldUser.status = user.status;
 
             return context.SaveChanges();
-         }
+        }
 
         public int DeleteUser(int id)
         {
@@ -62,5 +62,5 @@ namespace KeyHouse.Services
 
 
 
-}
+    }
 }

@@ -1,3 +1,4 @@
+using KeyHouse.Models.Entities;
 using KeyHouse.container;
 using KeyHouse.Models.Entities;
 using KeyHouse.Services;
@@ -18,7 +19,7 @@ namespace KeyHouse
 
             builder.Services.AddDbContext<KeyHouseDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Local")));
 
-
+            builder.Services.AddIdentity<Users, IdentityRole>().AddEntityFrameworkStores<KeyHouseDB>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
