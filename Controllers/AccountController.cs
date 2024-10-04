@@ -66,8 +66,8 @@ namespace KeyHouse.Controllers
                     user.Creation_date = DateTime.Now;
                     user.status = 1; // Active status
                     user.User_Type = 2; // Agency type // Register as a Agency Responsible
-                    user.AgencyName = newUser.AgencyName;
-                    user.AgencyDescription = newUser.AgencyDescription;
+                    user.Agency_Name = newUser.AgencyName;
+                    user.Agency_Description = newUser.AgencyDescription;
                     user.NumCompany = newUser.NumCompany;
                     // user.logo = newUser.logo;
                     IdentityResult result = await _userManager.CreateAsync(user, newUser.Password);
