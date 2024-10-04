@@ -1,15 +1,15 @@
 ﻿namespace KeyHouse.Models.Entities
 {
-    public class Agencies
+    public class Agencies : Users
     {
         public int Id { get; set; }
-        public required string Agency_Name { get; set; }
-        public required string Agency_Description { get; set; }
+        public  string Agency_Name { get; set; }
+        public  string Agency_Description { get; set; }
         public int Agency_Status { get; set; } // 1=> pending , 2=> rejected , 3=> accepted
         public int NumCompany {  get; set; }
-        public required string AgencyContactEmail { get; set; }
-        public required string AgencyContactPhone { get; set; }
-        public required string logo { get; set; } // binary or string 
+        //public  string AgencyContactEmail { get; set; }
+        //public  string AgencyContactPhone { get; set; }
+        //public  string logo { get; set; } // binary or string 
 
         // Relations
         //public virtual Users? Users { get; set; }

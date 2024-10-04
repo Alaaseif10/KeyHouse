@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace KeyHouse.container
 {
-    public class KeyHouseDB : IdentityDbContext
+    public class KeyHouseDB : IdentityDbContext <Users>
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            string connectionString = "Server=.;Database=KeyHouseDB;Integrated security=True;Encrypt=False";
+        public KeyHouseDB() { }
+        public KeyHouseDB(DbContextOptions<KeyHouseDB> options):base(options) { }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    string connectionString = "Server=.;Database=KeyHouseDB;Integrated security=True;Encrypt=False";
 
         //    optionsBuilder.UseSqlServer(connectionString);
         //}

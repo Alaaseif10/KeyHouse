@@ -4,6 +4,7 @@ using KeyHouse.container;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KeyHouse.Migrations
 {
     [DbContext(typeof(KeyHouseDB))]
-    partial class KeyHouseDBModelSnapshot : ModelSnapshot
+    [Migration("20240928175749_Register")]
+    partial class Register
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace KeyHouse.Migrations
 
                     b.HasIndex("UnitsId");
 
-                    b.ToTable("BenefitsServicesUnits", (string)null);
+                    b.ToTable("BenefitsServicesUnits");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.BenefitsServices", b =>
@@ -51,7 +54,7 @@ namespace KeyHouse.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BenefitsServices", (string)null);
+                    b.ToTable("BenefitsServices");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Blocks", b =>
@@ -73,7 +76,7 @@ namespace KeyHouse.Migrations
 
                     b.HasIndex("CitiesId");
 
-                    b.ToTable("Blocks", (string)null);
+                    b.ToTable("Blocks");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Cities", b =>
@@ -95,7 +98,7 @@ namespace KeyHouse.Migrations
 
                     b.HasIndex("GovernmentsId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Contracts", b =>
@@ -123,7 +126,7 @@ namespace KeyHouse.Migrations
 
                     b.HasIndex("AgenciesId");
 
-                    b.ToTable("Contracts", (string)null);
+                    b.ToTable("Contracts");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Governments", b =>
@@ -140,7 +143,7 @@ namespace KeyHouse.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Governments", (string)null);
+                    b.ToTable("Governments");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Images", b =>
@@ -162,7 +165,7 @@ namespace KeyHouse.Migrations
 
                     b.HasIndex("UnitsId");
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Interest", b =>
@@ -189,7 +192,7 @@ namespace KeyHouse.Migrations
 
                     b.HasIndex("UsersId1");
 
-                    b.ToTable("Interest", (string)null);
+                    b.ToTable("Interest");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Units", b =>
@@ -244,7 +247,7 @@ namespace KeyHouse.Migrations
 
                     b.HasIndex("BlocksId");
 
-                    b.ToTable("Units", (string)null);
+                    b.ToTable("Units");
                 });
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Users", b =>
