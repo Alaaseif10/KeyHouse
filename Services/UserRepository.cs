@@ -15,7 +15,7 @@ namespace KeyHouse.Services
         }
         public List<Users> GetAllUsers()
         {
-            List<Users> users = context.Users.ToList();
+            List<Users> users = context.Users.Include(a=>a.Agencies).Where(u => u.User_Type != 3).ToList();
             return users;
         }
         public Users GetUserById(int id)

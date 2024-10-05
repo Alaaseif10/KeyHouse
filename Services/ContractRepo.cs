@@ -6,7 +6,12 @@ namespace KeyHouse.Services
 {
     public class ContractRepo : IContract
     {
-        KeyHouseDB keyHouseContext = new KeyHouseDB();
+        KeyHouseDB keyHouseContext;
+
+        public ContractRepo(KeyHouseDB _keyHouseContext)
+        {
+            keyHouseContext = _keyHouseContext;
+        }
         public int createContact(Contracts contracts)
         {
             Contracts new_Contract = new Contracts();
