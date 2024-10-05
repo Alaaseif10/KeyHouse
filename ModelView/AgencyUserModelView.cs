@@ -14,7 +14,7 @@ namespace KeyHouse.ModelView
         [Required(ErrorMessage = "Commercial registration number is required.")]
         [MinLength(4, ErrorMessage = "number must be at least 4 characters long.")]
         [MaxLength(6, ErrorMessage = "number must be at less than 7 characters long.")]
-        public string NumCompany { get; set; }
+        public int NumCompany { get; set; }
 
         [Required(ErrorMessage = "contact email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address.")]
