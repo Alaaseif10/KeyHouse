@@ -60,6 +60,14 @@ namespace KeyHouse.Controllers
         public async Task<IActionResult> RegisterAgency(RegisterAgencyViewModel newUser)
         {
 
+            var fileName = newUser.logo.FileName;
+            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/logo", fileName);
+            //// Save the file to the path
+            using (var stream = new FileStream(imagePath, FileMode.Create))
+            {
+                newUser.logo.CopyToAsync(stream);
+            }
+
             Agencies user = new Agencies();
             user.UserName = newUser.UserName;
             user.Email = newUser.Email;
@@ -71,7 +79,7 @@ namespace KeyHouse.Controllers
             user.AgencyName = newUser.AgencyName;
             user.AgencyDescription = newUser.AgencyDescription;
             user.NumCompany = newUser.NumCompany;
-            // user.logo = newUser.logo;
+            user.logo = $"/logo/{fileName}";
             IdentityResult result = await _userManager.CreateAsync(user, newUser.Password);
             if (result.Succeeded)
             {
