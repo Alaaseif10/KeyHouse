@@ -38,7 +38,7 @@ INSERT INTO Blocks (Block_Name, CitiesId) VALUES ('Block H', 6);
 INSERT INTO Blocks (Block_Name, CitiesId) VALUES ('Block I', 7);
 
 
-inserted data for services
+--inserted data for services
 INSERT INTO BenefitsServices (BenefitsName) VALUES ('Electricity Meter');
 INSERT INTO BenefitsServices (BenefitsName) VALUES ('Water Meter');
 INSERT INTO BenefitsServices (BenefitsName) VALUES ('Natural Gas');
