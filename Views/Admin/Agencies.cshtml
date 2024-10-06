@@ -8,31 +8,32 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <h1 class="mb-3">System Users</h1>
+                <h1 class="mb-3">All Agencies</h1>
 
             </div>
-           @*  <div class="row g-4">
+            <div class="row g-4">
                 @foreach (var item in Model)
                 {
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="team-item rounded overflow-hidden">
                             <div class="position-relative">
-                                <img class="img-fluid" src="~/img/@item.logo" alt="">
+                               @*  <img class="img-fluid" src="~/img/@item.l" alt=""> *@
                                 <div class="position-absolute start-50 top-100 translate-middle d-flex align-items-center">
                                 </div>
                             </div>
                             <div class="text-center p-4 mt-3">
-                                <h5 class="fw-bold mb-0">@item.Agency_Name</h5>
-                                <label>Agency Contact Email:</label><small>@item.AgencyContactEmail</small>
+                                <h5 class="fw-bold mb-0">@item.AgencyName</h5>
+                                <label>Agency Contact Email:</label><small>@item.Email</small>
                                 <br />
-                                <label>Agency Contact Phone:</label><small>@item.AgencyContactPhone</small>
+                                <label>Agency Contact Phone:</label><small>@item.PhoneNumber</small>
                                 <br />
-                                <label>Status : </label><small> @(item.Agency_Status == 1 ? "Pending" : item.Agency_Status == 2 ? "Rejected" : "Approved")</small>
+                                <label>Agency Status:</label><small>@(item.AgencyStatus == 1 ? "Pending" : item.AgencyStatus == 2 ? "Rejected" : "Approved")</small>
+                                <br />
                             </div>
                         </div>
                     </div>
                 }
-            </div> *@
+            </div>
         </div>
     </div>
     @Html.PagedListPager(Model, page => Url.Action("Users", new { page }), new PagedListRenderOptions

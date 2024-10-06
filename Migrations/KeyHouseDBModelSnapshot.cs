@@ -15,27 +15,12 @@ namespace KeyHouse.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
-
+#pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("AgenciesUnits", b =>
-                {
-                    b.Property<int>("AgenciesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UnitsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AgenciesId", "UnitsId");
-
-                    b.HasIndex("UnitsId");
-
-                    b.ToTable("AgenciesUnits");
-                });
 
             modelBuilder.Entity("BenefitsServicesUnits", b =>
                 {
@@ -51,49 +36,6 @@ namespace KeyHouse.Migrations
 
                     b.ToTable("BenefitsServicesUnits");
                 });
-
-            modelBuilder.Entity("KeyHouse.Models.Entities.Agencies", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AgencyContactEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AgencyContactPhone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Agency_Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Agency_Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Agency_Status")
-                        .HasColumnType("int");
-
-                    //b.Property<string>("NumCompany")
-                    //    .IsRequired()
-                    //    .HasColumnType("nvarchar(max)");
-                    b.Property<int>("NumCompany")
-                    .HasColumnType("int");
-
-                    b.Property<string>("logo")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Agencies");
-                });
-
 
             modelBuilder.Entity("KeyHouse.Models.Entities.BenefitsServices", b =>
                 {
@@ -225,11 +167,11 @@ namespace KeyHouse.Migrations
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Interest", b =>
                 {
-                    b.Property<int>("UsersId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("UnitsId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Interest_AddedDate")
                         .HasColumnType("datetime2");
@@ -237,15 +179,19 @@ namespace KeyHouse.Migrations
                     b.Property<bool>("SuccessfulContact")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UsersId1")
+                    b.Property<int>("UnitsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("UsersId", "UnitsId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UnitsId");
 
-                    b.HasIndex("UsersId1");
+                    b.HasIndex("UsersId", "UnitsId")
+                        .IsUnique();
 
                     b.ToTable("Interest");
                 });
@@ -261,10 +207,8 @@ namespace KeyHouse.Migrations
                     b.Property<DateTime>("Added_Date")
                         .HasColumnType("datetime2");
 
-
                     b.Property<string>("AgenciesId")
                         .HasColumnType("nvarchar(450)");
-
 
                     b.Property<int>("Area")
                         .HasColumnType("int");
@@ -306,6 +250,8 @@ namespace KeyHouse.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AgenciesId");
 
                     b.HasIndex("BlocksId");
 
@@ -374,9 +320,6 @@ namespace KeyHouse.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("User_Type")
-                        .HasColumnType("int");
 
                     b.Property<int>("status")
                         .HasColumnType("int");
@@ -533,7 +476,6 @@ namespace KeyHouse.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-
             modelBuilder.Entity("KeyHouse.Models.Entities.Agencies", b =>
                 {
                     b.HasBaseType("KeyHouse.Models.Entities.Users");
@@ -552,198 +494,187 @@ namespace KeyHouse.Migrations
                     b.Property<int>("NumCompany")
                         .HasColumnType("int");
 
+                    b.Property<string>("logo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasDiscriminator().HasValue("Agencies");
-
-                    modelBuilder.Entity("AgenciesUnits", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Agencies", null)
-                                .WithMany()
-                                .HasForeignKey("AgenciesId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b.HasOne("KeyHouse.Models.Entities.Units", null)
-                                .WithMany()
-                                .HasForeignKey("UnitsId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-                        });
-
-                    modelBuilder.Entity("BenefitsServicesUnits", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.BenefitsServices", null)
-                                .WithMany()
-                                .HasForeignKey("BenefitsServicesId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b.HasOne("KeyHouse.Models.Entities.Units", null)
-                                .WithMany()
-                                .HasForeignKey("UnitsId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Blocks", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Cities", "Cities")
-                                .WithMany("Blocks")
-                                .HasForeignKey("CitiesId");
-
-                            b.Navigation("Cities");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Cities", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Governments", "Governments")
-                                .WithMany("Cities")
-                                .HasForeignKey("GovernmentsId");
-
-                            b.Navigation("Governments");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Contracts", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Agencies", "Agencies")
-                                .WithMany("Contracts")
-                                .HasForeignKey("AgenciesId");
-
-                            b.Navigation("Agencies");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Images", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Units", "Units")
-                                .WithMany("Images")
-                                .HasForeignKey("UnitsId");
-
-                            b.Navigation("Units");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Interest", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Units", "Units")
-                                .WithMany("Interests")
-                                .HasForeignKey("UnitsId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b.HasOne("KeyHouse.Models.Entities.Users", "Users")
-                                .WithMany("Interests")
-                                .HasForeignKey("UsersId1")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b.Navigation("Units");
-
-                            b.Navigation("Users");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Units", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Blocks", "Blocks")
-                                .WithMany()
-                                .HasForeignKey("BlocksId");
-
-                            b.Navigation("Blocks");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Users", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Agencies", "Agencies")
-                                .WithMany()
-                                .HasForeignKey("AgenciesId");
-
-                            b.Navigation("Agencies");
-                        });
-
-                    modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                        {
-                            b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                                .WithMany()
-                                .HasForeignKey("RoleId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-                        });
-
-                    modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Users", null)
-                                .WithMany()
-                                .HasForeignKey("UserId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-                        });
-
-                    modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Users", null)
-                                .WithMany()
-                                .HasForeignKey("UserId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-                        });
-
-                    modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                        {
-                            b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                                .WithMany()
-                                .HasForeignKey("RoleId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b.HasOne("KeyHouse.Models.Entities.Users", null)
-                                .WithMany()
-                                .HasForeignKey("UserId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-                        });
-
-                    modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                        {
-                            b.HasOne("KeyHouse.Models.Entities.Users", null)
-                                .WithMany()
-                                .HasForeignKey("UserId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-                        });
-
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Agencies", b =>
-                        {
-                            b.Navigation("Contracts");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Cities", b =>
-                        {
-                            b.Navigation("Blocks");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Governments", b =>
-                        {
-                            b.Navigation("Cities");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Units", b =>
-                        {
-                            b.Navigation("Images");
-
-                            b.Navigation("Interests");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Users", b =>
-                        {
-                            b.Navigation("Interests");
-                        });
-
-                    modelBuilder.Entity("KeyHouse.Models.Entities.Agencies", b =>
-                        {
-                            b.Navigation("Contracts");
-
-                            b.Navigation("Units");
-                        });
-
                 });
-    }
+
+            modelBuilder.Entity("BenefitsServicesUnits", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.BenefitsServices", null)
+                        .WithMany()
+                        .HasForeignKey("BenefitsServicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KeyHouse.Models.Entities.Units", null)
+                        .WithMany()
+                        .HasForeignKey("UnitsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Blocks", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Cities", "Cities")
+                        .WithMany("Blocks")
+                        .HasForeignKey("CitiesId");
+
+                    b.Navigation("Cities");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Cities", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Governments", "Governments")
+                        .WithMany("Cities")
+                        .HasForeignKey("GovernmentsId");
+
+                    b.Navigation("Governments");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Contracts", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Agencies", "Agencies")
+                        .WithMany("Contracts")
+                        .HasForeignKey("AgenciesId");
+
+                    b.Navigation("Agencies");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Images", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Units", "Units")
+                        .WithMany("Images")
+                        .HasForeignKey("UnitsId");
+
+                    b.Navigation("Units");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Interest", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Units", "Units")
+                        .WithMany("Interests")
+                        .HasForeignKey("UnitsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KeyHouse.Models.Entities.Users", "Users")
+                        .WithMany("Interests")
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Units");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Units", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Agencies", "Agencies")
+                        .WithMany("Units")
+                        .HasForeignKey("AgenciesId");
+
+                    b.HasOne("KeyHouse.Models.Entities.Blocks", "Blocks")
+                        .WithMany()
+                        .HasForeignKey("BlocksId");
+
+                    b.Navigation("Agencies");
+
+                    b.Navigation("Blocks");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Users", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Agencies", "Agencies")
+                        .WithMany()
+                        .HasForeignKey("AgenciesId");
+
+                    b.Navigation("Agencies");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Users", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Users", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KeyHouse.Models.Entities.Users", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("KeyHouse.Models.Entities.Users", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Cities", b =>
+                {
+                    b.Navigation("Blocks");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Governments", b =>
+                {
+                    b.Navigation("Cities");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Units", b =>
+                {
+                    b.Navigation("Images");
+
+                    b.Navigation("Interests");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Users", b =>
+                {
+                    b.Navigation("Interests");
+                });
+
+            modelBuilder.Entity("KeyHouse.Models.Entities.Agencies", b =>
+                {
+                    b.Navigation("Contracts");
+
+                    b.Navigation("Units");
+                });
+#pragma warning restore 612, 618
+        }
     }
 }

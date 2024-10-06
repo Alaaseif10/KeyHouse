@@ -1,5 +1,6 @@
 ﻿using KeyHouse.container;
 using KeyHouse.Models.Entities;
+using KeyHouse.ModelView;
 using KeyHouse.services;
 using KeyHouse.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -36,15 +37,27 @@ namespace KeyHouse.Controllers
             return View(pagedData);
         }
 
-        public IActionResult Properties()
+        public IActionResult Properties(int? page)
         {
-            
+            UnitRepo unitRepo = new UnitRepo();
+            //List<Units> Units = unitRepo.GetAllUnits();
+            // Set the page number (default is 1) and page size
+            int pageNumber = page ?? 1;
+            int pageSize = 8;
+
+            // Use X.PagedList to paginate the data
+            //var pagedData = Units.ToPagedList(pageNumber, pageSize);
+            //pagedData
             return View();
+            
         }
         public IActionResult Users(int? page)
         {
             UserRepository userRepository = new UserRepository(_context);
             List<Users> users= userRepository.GetAllUsers();
+
+            List<UserAgencyViewModel> mappedRes = new List<UserAgencyViewModel>();
+           
             // Set the page number (default is 1) and page size
             int pageNumber = page ?? 1;
             int pageSize = 8;
@@ -53,5 +66,6 @@ namespace KeyHouse.Controllers
             var pagedData = users.ToPagedList(pageNumber, pageSize);
             return View(pagedData);
         }
+        
     }
 }

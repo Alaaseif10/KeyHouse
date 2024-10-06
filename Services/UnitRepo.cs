@@ -8,8 +8,13 @@ namespace KeyHouse.Services
 {
     public class UnitRepo
     {
-        KeyHouseDB context = new KeyHouseDB();
+         KeyHouseDB context = new KeyHouseDB();
 
+        //KeyHouseDB context;
+        //public UnitRepo(KeyHouseDB _context)
+        //{
+        //    context = _context;
+        //}
         #region IED
 
         /// <summary>
@@ -114,8 +119,9 @@ namespace KeyHouse.Services
         /// <returns></returns>
         public Units GetUnitById(int id )
         {
-            return context.Units.SingleOrDefault(u => u.Id == id  && u.Status==1 && u.Agencies
-            .Any(a => a.Contracts.Any(c => c.End_date > u.Added_Date)));
+            return null;
+            //return context.Units.SingleOrDefault(u => u.Id == id  && u.Status==1 && u.Agencies
+            //.Any(a => a.Contracts.Any(c => c.End_date > u.Added_Date)));
 
         }
         /// <summary>
@@ -125,11 +131,13 @@ namespace KeyHouse.Services
         /// <returns></returns>
         public List<Units> GetAllUnits(Units F_units)
         {
-              List<Units> units = context.Units
-              .Where(u =>  u.Equals(F_units) &&
-               u.Agencies.Any(a => a.Contracts.Any(c => c.End_date > u.Added_Date)))
-              .ToList();
-            return units;
+
+            return null;
+            //  List<Units> units = context.Units
+            //  .Where(u =>  u.Equals(F_units) &&
+            //   u.Agencies.Any(a => a.Contracts.Any(c => c.End_date > u.Added_Date)))
+            //  .ToList();
+            //return units;
         }
 
         #endregion

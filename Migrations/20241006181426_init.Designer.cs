@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KeyHouse.Migrations
 {
     [DbContext(typeof(KeyHouseDB))]
-    [Migration("20240928175749_Register")]
-    partial class Register
+    [Migration("20241006181426_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,11 +170,11 @@ namespace KeyHouse.Migrations
 
             modelBuilder.Entity("KeyHouse.Models.Entities.Interest", b =>
                 {
-                    b.Property<int>("UsersId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("UnitsId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Interest_AddedDate")
                         .HasColumnType("datetime2");
@@ -182,15 +182,19 @@ namespace KeyHouse.Migrations
                     b.Property<bool>("SuccessfulContact")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UsersId1")
+                    b.Property<int>("UnitsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("UsersId", "UnitsId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UnitsId");
 
-                    b.HasIndex("UsersId1");
+                    b.HasIndex("UsersId", "UnitsId")
+                        .IsUnique();
 
                     b.ToTable("Interest");
                 });
@@ -218,10 +222,10 @@ namespace KeyHouse.Migrations
                     b.Property<bool>("Furnishing")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Num_Bathrooms")
+                    b.Property<int?>("Num_Bathrooms")
                         .HasColumnType("int");
 
-                    b.Property<int>("Num_Rooms")
+                    b.Property<int?>("Num_Rooms")
                         .HasColumnType("int");
 
                     b.Property<float>("Price")
@@ -230,16 +234,23 @@ namespace KeyHouse.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Under_constracting_Status")
+                    b.Property<string>("Type_Rent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type_Unit")
                         .HasColumnType("int");
+
+                    b.Property<string>("Under_constracting_Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Unit_Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Unit_Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Unit_Title")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -312,9 +323,6 @@ namespace KeyHouse.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("User_Type")
-                        .HasColumnType("int");
 
                     b.Property<int>("status")
                         .HasColumnType("int");
@@ -475,23 +483,15 @@ namespace KeyHouse.Migrations
                 {
                     b.HasBaseType("KeyHouse.Models.Entities.Users");
 
-                    b.Property<string>("AgencyContactEmail")
+                    b.Property<string>("AgencyDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AgencyContactPhone")
+                    b.Property<string>("AgencyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Agency_Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Agency_Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Agency_Status")
+                    b.Property<int>("AgencyStatus")
                         .HasColumnType("int");
 
                     b.Property<int>("NumCompany")
@@ -565,7 +565,7 @@ namespace KeyHouse.Migrations
 
                     b.HasOne("KeyHouse.Models.Entities.Users", "Users")
                         .WithMany("Interests")
-                        .HasForeignKey("UsersId1")
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

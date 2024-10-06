@@ -8,18 +8,21 @@ namespace KeyHouse.container
 {
     public class KeyHouseDB : IdentityDbContext <Users>
     {
-<<<<<<< HEAD
         public KeyHouseDB() { }
         public KeyHouseDB(DbContextOptions<KeyHouseDB> options):base(options) { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Interest>().HasKey(td => new { td.UsersId, td.UnitsId });
+            //modelBuilder.Entity<Interest>().HasKey(td => new { td.UsersId, td.UnitsId });
+            modelBuilder.Entity<Interest>().HasIndex(td => new { td.UsersId, td.UnitsId }).IsUnique();
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Units>().Property(p => p.Type_Rent).HasConversion<string>();
             modelBuilder.Entity<Units>().Property(p => p.Under_constracting_Status).HasConversion<string>();
             //modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
         }
+
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Agencies> Agencies { get; set; }
         public virtual DbSet<Units> Units { get; set; }

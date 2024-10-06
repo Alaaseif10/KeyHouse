@@ -22,7 +22,7 @@ namespace KeyHouse.services
         {
             return context.Agencies.Where(a => a.AgencyStatus == status).ToList();
         }
-        public Agencies GetAgencyById(int agencyId)
+        public Agencies GetAgencyById(string agencyId)
         {
             return context.Agencies.SingleOrDefault(a => a.Id == agencyId);
         }
@@ -44,7 +44,8 @@ namespace KeyHouse.services
                 PasswordHash = agencyData.AgencyUserPassword,
                 UserName = agencyData.Agency_Name,
                 PhoneNumber = agencyData.AgencyContactPhone,
-                User_Type = 2,
+                //TO-DO
+               // User_Type = 2,
                 status = 2,
                 Creation_date = DateTime.Now
             };
@@ -52,13 +53,13 @@ namespace KeyHouse.services
             context.Users.Add(user);
             context.SaveChanges();
         }
-        public void DeleteAgency(int agencyId)
+        public void DeleteAgency(String agencyId)
         {
             Agencies AgecnyData = context.Agencies.SingleOrDefault(a => a.Id == agencyId);
             context.Remove(AgecnyData);
             context.SaveChanges();
         }
-        public void EditAgencyData(int agencyId, Agencies newData)
+        public void EditAgencyData(String agencyId, Agencies newData)
         {
             Agencies olddata = context.Agencies.SingleOrDefault(a => a.Id == agencyId);
             olddata.AgencyDescription = newData.AgencyDescription;
@@ -69,7 +70,7 @@ namespace KeyHouse.services
             //olddata.logo = newData.logo;
             context.SaveChanges();
         }
-        public void EditAgencyStatus(int agencyId)
+        public void EditAgencyStatus(String agencyId)
         {
             Agencies olddata = context.Agencies.SingleOrDefault(a => a.Id == agencyId);
             olddata.AgencyStatus = 3;

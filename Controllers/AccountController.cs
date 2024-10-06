@@ -19,33 +19,34 @@ namespace KeyHouse.Controllers
 
         [HttpGet]
         public IActionResult Register()
-        { 
+        {
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel newUser)
         {
-                Users user = new Users();
-                user.UserName = newUser.UserName;
-                user.Email = newUser.Email;
-                user.PhoneNumber = newUser.UserPhone;
-                user.Creation_date = DateTime.Now;
-                user.status = 1; // Active status
-                user.User_Type = 1; // Client type // Register as a regular user
+            Users user = new Users();
+            user.UserName = newUser.UserName;
+            user.Email = newUser.Email;
+            user.PhoneNumber = newUser.UserPhone;
+            user.Creation_date = DateTime.Now;
+            user.status = 1; // Active status
+                             //TO-DO
+                             //user.User_Type = 1; // Client type // Register as a regular user
 
-                IdentityResult result = await _userManager.CreateAsync(user, newUser.Password);
-                if (result.Succeeded)
+            IdentityResult result = await _userManager.CreateAsync(user, newUser.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                foreach (var item in result.Errors)
                 {
-                    return RedirectToAction("Login", "Account");
+                    ModelState.AddModelError("", item.Description);
                 }
-                else
-                {
-                    foreach (var item in result.Errors)
-                    {
-                        ModelState.AddModelError("", item.Description);
-                    }
 
-                }
+            }
 
 
             return View("Register", newUser);
@@ -58,33 +59,34 @@ namespace KeyHouse.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterAgency(RegisterAgencyViewModel newUser)
         {
-            
-                    Agencies user = new Agencies();
-                    user.UserName = newUser.UserName;
-                    user.Email = newUser.Email;
-                    user.PhoneNumber = newUser.UserPhone;
-                    user.Creation_date = DateTime.Now;
-                    user.status = 1; // Active status
-                    user.User_Type = 2; // Agency type // Register as a Agency Responsible
-                    user.AgencyName = newUser.AgencyName;
-                    user.AgencyDescription = newUser.AgencyDescription;
-                    user.NumCompany = newUser.NumCompany;
-                    // user.logo = newUser.logo;
-                    IdentityResult result = await _userManager.CreateAsync(user, newUser.Password);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Login", "Account");
-                    }
-                    else
-                    {
-                        foreach (var item in result.Errors)
-                        {
-                            ModelState.AddModelError("", item.Description);
-                        }
 
-                    }
+            Agencies user = new Agencies();
+            user.UserName = newUser.UserName;
+            user.Email = newUser.Email;
+            user.PhoneNumber = newUser.UserPhone;
+            user.Creation_date = DateTime.Now;
+            user.status = 1; // Active status
+            //TO-DO
+            //user.User_Type = 2; // Agency type // Register as a Agency Responsible
+            user.AgencyName = newUser.AgencyName;
+            user.AgencyDescription = newUser.AgencyDescription;
+            user.NumCompany = newUser.NumCompany;
+            // user.logo = newUser.logo;
+            IdentityResult result = await _userManager.CreateAsync(user, newUser.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError("", item.Description);
+                }
 
-           return View("Register", newUser);
+            }
+
+            return View("Register", newUser);
 
         }
 

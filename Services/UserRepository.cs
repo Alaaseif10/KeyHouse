@@ -15,10 +15,13 @@ namespace KeyHouse.Services
         }
         public List<Users> GetAllUsers()
         {
-            List<Users> users = context.Users.Include(a=>a.Agencies).Where(u => u.User_Type != 3).ToList();
+            //TO-DO
+            //List<Users> users = context.Users.Where(u => u.User_Type != 3).ToList();
+
+            List<Users> users = context.Users.ToList();
             return users;
         }
-        public Users GetUserById(int id)
+        public Users GetUserById(string id)
         {
             return context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Id == id);
         }
@@ -39,21 +42,22 @@ namespace KeyHouse.Services
             return context.SaveChanges();
         }
 
-        public int UpdateUser(int id, Users user)
+        public int UpdateUser(string id, Users user)
         {
             Users oldUser = context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Id == id);
             oldUser.UserName = user.UserName;
             oldUser.Email = user.Email;
             oldUser.PasswordHash = user.PasswordHash;
             oldUser.PhoneNumber = user.PhoneNumber;
-            oldUser.User_Type = user.User_Type;
+            //TO-DO
+            //oldUser.User_Type = user.User_Type;
             //oldUser.Creation_date = user.Creation_date;
             oldUser.status = user.status;
 
             return context.SaveChanges();
         }
 
-        public int DeleteUser(int id)
+        public int DeleteUser(string id)
         {
             Users oldUser = context.Users.SingleOrDefault(s => s.Id == id);
             context.Users.Remove(oldUser);

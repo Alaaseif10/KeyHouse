@@ -8,7 +8,7 @@ namespace KeyHouse.Services
     public interface IUserRepository
     {
         public List<Users> GetAllUsers();
-        public Users GetUserById(int id);
+        public Users GetUserById(string id);
 
         public Users ValidateUserByEmail(string email, string password);
 
@@ -16,9 +16,9 @@ namespace KeyHouse.Services
 
         public int InsertUser(Users user);
 
-        public int UpdateUser(int id, Users user);
+        public int UpdateUser(string id, Users user);
 
-        public int DeleteUser(int id);
+        public int DeleteUser(string id);
 
 
     }
