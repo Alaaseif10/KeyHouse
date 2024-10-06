@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using static KeyHouse.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using KeyHouse.ModelView;
+using KeyHouse.container;
+using Microsoft.AspNetCore.Identity;
 
 namespace KeyHouse.Controllers
 {
@@ -29,16 +31,24 @@ namespace KeyHouse.Controllers
         //        return View("AgencyDashBoard");
         //    }
 
+        private readonly KeyHouseDB _context;
+        SignInManager<Users> _signInManager;
+
+        public AgencyController(KeyHouseDB context,SignInManager<Users> signInManager)
+        {
+            _context = context;
+            _signInManager = signInManager;
+        }
 
 
-        BenefitServicesRepo serv = new BenefitServicesRepo();
-        Locations loc = new Locations();
         public IActionResult Dashboard()
         {
             return View("AgencyDashBoard");
         }
         public IActionResult addProp()
         {
+            Locations loc = new Locations(_context);
+            BenefitServicesRepo serv = new BenefitServicesRepo(_context);
             #region data
             ViewBag.PropertySellType = new SelectList(Enum.GetValues(typeof(PropertySellType)));
             ViewBag.PropertyCategory = new SelectList(Enum.GetValues(typeof(PropertyCategory)));
@@ -52,18 +62,20 @@ namespace KeyHouse.Controllers
         }
         public JsonResult GetCities(int governmentId)
         {
+            Locations loc = new Locations(_context);
             return Json(loc.getcity(governmentId));
         }
         public JsonResult GetBlocks(int cityId)
         {
+            Locations loc = new Locations(_context);
             return Json(loc.getblock(cityId));
         }
-
         public IActionResult SaveProp(UnitsDetailsModelView Unit) 
         {
-            UnitRepo unit = new UnitRepo();
+            UnitRepo unit = new UnitRepo(_context);
             if (ModelState.IsValid) {
-                unit.InsertUnits(Unit);
+                var result = _signInManager.UserManager.Users.FirstOrDefault() as Agencies;
+                unit.InsertUnits(Unit, result);
                 return View("AgencyDashBoard");
             }
             return View("index");

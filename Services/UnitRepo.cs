@@ -1,6 +1,7 @@
 ﻿using KeyHouse.container;
 using KeyHouse.Models.Entities;
 using KeyHouse.ModelView;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -8,21 +9,25 @@ namespace KeyHouse.Services
 {
     public class UnitRepo
     {
-         KeyHouseDB context = new KeyHouseDB();
+        // KeyHouseDB context = new KeyHouseDB();
 
-        //KeyHouseDB context;
-        //public UnitRepo(KeyHouseDB _context)
-        //{
-        //    context = _context;
-        //}
+        KeyHouseDB context;
+
+        public UnitRepo(KeyHouseDB _context)
+        {
+            context = _context;
+      
+
+        }
         #region IED
 
         /// <summary>
         /// Insert Unit
         /// </summary>
         /// <param name="units"></param>
-        public void InsertUnits(UnitsDetailsModelView Unit)
+        public void InsertUnits(UnitsDetailsModelView Unit, Agencies Agency)
         {
+
             // add in unit table
             var InsertedUnit = new Units
             {
@@ -70,6 +75,8 @@ namespace KeyHouse.Services
                     { Img_Path = $"/unitImages/{fileName}", Units = InsertedUnit });
                 }
             }
+
+            InsertedUnit.Agencies = Agency;
             context.Units.Add(InsertedUnit);
             context.SaveChanges();
             

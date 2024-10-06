@@ -7,7 +7,7 @@ namespace KeyHouse.Controllers
     {
         public IActionResult Index()
         {
-            Locations locations = new Locations();
+           // Locations locations = new Locations();
             //locations.Insertion();
             return View();
         }

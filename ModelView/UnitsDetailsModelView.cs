@@ -24,6 +24,7 @@ namespace KeyHouse.ModelView
         public int CityId { get;set; }
         public int BlockId { get; set; }
 
+
         // to list ids of selected services
         public List<int> SelectedServices { get; set; }
 

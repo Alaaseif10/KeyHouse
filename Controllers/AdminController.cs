@@ -39,7 +39,7 @@ namespace KeyHouse.Controllers
 
         public IActionResult Properties(int? page)
         {
-            UnitRepo unitRepo = new UnitRepo();
+            UnitRepo unitRepo = new UnitRepo(_context);
             //List<Units> Units = unitRepo.GetAllUnits();
             // Set the page number (default is 1) and page size
             int pageNumber = page ?? 1;

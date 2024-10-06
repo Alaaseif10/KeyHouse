@@ -7,7 +7,11 @@ namespace KeyHouse.Services
 {
     public class Locations : Controller
     {
-        KeyHouseDB context = new KeyHouseDB();
+        KeyHouseDB context;
+        public Locations(KeyHouseDB _context)
+        {
+            context = _context;
+        }
 
         public List<Governments> GetGovernments()
         {

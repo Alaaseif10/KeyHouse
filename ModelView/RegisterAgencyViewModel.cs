@@ -10,7 +10,7 @@ namespace KeyHouse.ModelView
         public string AgencyDescription { get; set; }
         [Required]
         public int NumCompany { get; set; }
-        [Required]
-        public IFormFile logo { get; set; }
+        //[Required]
+        //public IFormFile logo { get; set; }
     }
 }
