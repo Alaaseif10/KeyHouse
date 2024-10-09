@@ -107,35 +107,65 @@ namespace KeyHouse.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel LoginUser)
         {
-
             if (ModelState.IsValid)
             {
+                // Find user by email
                 Users user = await _userManager.FindByEmailAsync(LoginUser.Email);
+
+                // Check if user exists
                 if (user != null)
                 {
-                    SignInResult result = await _signInManager.PasswordSignInAsync(user, LoginUser.Password, false, false);
-                    if (result.Succeeded)
+                    // Check if user is of type Agencies
+                    if (user is Agencies agency)
                     {
-                        //Create Cookie
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                     
-
-                        return RedirectToAction("Index", "Home");
+                        if (agency.AgencyStatus == 1)
+                        {
+                            ModelState.AddModelError("", "Your Account is pending, Admin is confirming your data.");
+                        }
+                        else if (agency.AgencyStatus == 2)
+                        {
+                            ModelState.AddModelError("", "Sorry, your Account has been rejected.");
+                        }
+                        else
+                        {
+                            // Try to sign in the user
+                            SignInResult result = await _signInManager.PasswordSignInAsync(user, LoginUser.Password, false, false);
+                            if (result.Succeeded)
+                            {
+                                // Create Cookie and sign in
+                                await _signInManager.SignInAsync(user, isPersistent: false);
+                                return RedirectToAction("Index", "Home");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Password is Invalid");
+                            }
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Password is Invalid");
+                        // If user is not an agency, continue with normal login
+                        SignInResult result = await _signInManager.PasswordSignInAsync(user, LoginUser.Password, false, false);
+                        if (result.Succeeded)
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Password is Invalid");
+                        }
                     }
-
                 }
                 else
                 {
                     ModelState.AddModelError("", "Email or Password is Invalid");
                 }
-
             }
-            return View();
+
+            return View(LoginUser);
         }
+
         public IActionResult RegisterAs()
         {
             return View();
