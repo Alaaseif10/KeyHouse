@@ -11,5 +11,6 @@
         public int status { get; set; } // 1 => active , 2 => not active 
         public string AgencyName { get; set; }
 
+
     }
 }

@@ -2,4 +2,75 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 <section class="py-3 py-md-5">
+
+    <div>
+        <canvas id="doughnut-chart"></canvas>
+    </div>
 </section>
+<script>
+    // Sample data (you can pass your model data here)
+    var data = {
+        labels: ['Users', 'Agencies', 'Properties'], // Change labels based on your data
+        datasets: [{
+            label: 'My First Dataset',
+            data: [@ViewBag.Users, @ViewBag.Agency, @ViewBag.Properites], // Change data based on your data
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    // Configuration for the pie chart
+    var config = {
+        type: 'doughnut',
+        data: data,
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Allow chart to resize
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: {
+                            size: 14, // Change font size for labels
+                            weight: 'bold' // Change font weight for labels
+                        },
+                        color: '#333' // Change legend label color
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Count Of Item In Our Systen',
+                    font: {
+                        size: 18, // Title font size
+                        weight: 'bold' // Title font weight
+                    },
+                    color: '#333' // Title color
+                },
+                tooltip: {
+                    bodyFont: {
+                        size: 14 // Change tooltip font size
+                    },
+                    titleFont: {
+                        weight: 'bold' // Change tooltip title font weight
+                    }
+                }
+            }
+        }
+    };
+
+    // Render the pie chart
+    var myPieChart = new Chart(
+        document.getElementById('doughnut-chart'),
+        config
+    );
+</script>

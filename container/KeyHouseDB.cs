@@ -25,6 +25,8 @@ namespace KeyHouse.container
 
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Agencies> Agencies { get; set; }
+        public virtual DbSet<Admin> Admin { get; set; }
+
         public virtual DbSet<Units> Units { get; set; }
         public virtual DbSet<Contracts> Contracts { get; set; }
         public virtual DbSet<Images> Images { get; set; }

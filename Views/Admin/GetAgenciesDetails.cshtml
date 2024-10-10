@@ -1,0 +1,84 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@model KeyHouse.Models.Entities.Agencies
+@using X.PagedList.Mvc.Core;
+<section class="py-5">
+    <div class="container">
+        <div class="row gx-5">
+            <aside class="col-lg-6">
+                <div class="border rounded-4 mb-3 d-flex justify-content-center">
+                    <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image" href="~/img/@Model.logo">
+                        <img style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit" src="~/img/@Model.logo" />
+                    </a>
+                </div>
+            </aside>
+            <main class="col-lg-6">
+                <div class="ps-lg-3">
+                    <h3 class="title text-dark">
+                        @Model.AgencyName
+                    </h3>
+                    <p>
+                        @Model.AgencyDescription
+                    </p>
+
+                    <div class="row">
+                        <dt class="col-3">Agency Email :</dt>
+                        <dd class="col-9">@Model.Email</dd>
+
+                        <dt class="col-3">Agency Phone: </dt>
+                        <dd class="col-9">@Model.PhoneNumber</dd>
+
+                        <dt class="col-3">Agency Status:</dt>
+                        <dd class="col-9">
+                            @(Model.AgencyStatus == 1 ? "Pending" : Model.AgencyStatus == 2 ? "Rejected" : "Approved")
+                            @if (Model.AgencyStatus == 1)
+                            {
+                                <a class="btn btn-link" href="@Url.Action("ApproveAgency", "Admin", new { agencyId = Model.Id })">Approve Agency</a>
+                            }
+                        </dd>
+                    </div>
+
+                    <hr />
+
+                </div>
+            </main>
+            @if (Model.AgencyStatus != 1)
+            {
+                <div class="col-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h2 class="mb-4">Agency Contracts</h2>
+                        <div class="table-responsive">
+                            <a class="btn btn-outline-warning" href="@Url.Action("AddContract", "Admin", new { agencyId = Model.Id })" id="AddContract">+</a>
+                            <p>@TempData["Messag"]</p>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Contract Name</th>
+                                        <th scope="col">Start Date</th>
+                                        <th scope="col">End Date</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Contracts)
+                                    {
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>@item.Contract_Name</td>
+                                            <td>@item.Start_date</td>
+                                            <td>@item.End_date</td>
+                                            <td>@(item.End_date > DateTime.Now ? "Active" : "Expired")</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

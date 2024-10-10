@@ -52,6 +52,11 @@ namespace KeyHouse.Services
             return keyHouseContext.Contracts.SingleOrDefault(c => c.Id == id);
 
         }
+        public Contracts getContractByAgencyID(string agencyID)
+        {
+            return keyHouseContext.Contracts.SingleOrDefault(a => a.Agencies.Id == agencyID && a.End_date > DateTime.Now);
+
+        }
 
         public int updateContact(Contracts Updatedcontract)
         {

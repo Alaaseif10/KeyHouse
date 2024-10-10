@@ -24,7 +24,7 @@ namespace KeyHouse.services
         }
         public Agencies GetAgencyById(string agencyId)
         {
-            return context.Agencies.SingleOrDefault(a => a.Id == agencyId);
+            return context.Agencies.Include(a => a.Contracts).SingleOrDefault(a => a.Id == agencyId);
         }
         public void InsertAgencyAndUser(AgencyUserModelView agencyData)
         { // DEFAULT INSERTION IN AGENCY TABLE ONLY

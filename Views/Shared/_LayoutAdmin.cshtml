@@ -29,6 +29,7 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Start Header -->
@@ -43,64 +44,55 @@
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <li class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto">
-                  
-                    <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    <a class="nav-item nav-link active" asp-area="" asp-controller="Home" asp-action="About">About</a>
-                    <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
-                </div>
-                <a class="btn btn-primary px-3 d-none d-lg-flex" asp-area="" asp-controller="Home" asp-action="Index">Log In</a>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="navbar-nav ms-auto">
+                        <a class="nav-item nav-link active" asp-area="" asp-controller="Admin" asp-action="DashBoard">Home</a>
+                        <a class="nav-item nav-link" asp-area="" asp-controller="Admin" asp-action="Agencies">Agencies</a>
+                        <a class="nav-item nav-link" asp-area="" asp-controller="Admin" asp-action="Properties">Properties</a>
+                        <a class="nav-item nav-link" asp-area="" asp-controller="Admin" asp-action="Users">Users</a>
 
-                <ul class="navbar-nav ms-auto">
-                    <!-- Profile Icon Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="/img/profile-user.png" class="rounded-circle" alt="Profile Icon" style="width: 40px; height: 40px;">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><a class="dropdown-item" href="#">Your Profile</a></li>
-                            <li><a class="dropdown-item" href="/agency/addProp">Add Property</a></li>
-                            <li><a class="dropdown-item" href="/agency/Dashboard">Your Dashboaed</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </div>
+                    <a class="nav-link text-dark">
+                        Welcome, <span style="color: seagreen; font-weight: bold; font-style: normal; font-size:17px; font-family: AlHurraTxtBold">
+                            @User.Identity.Name
+                        </span>
+                    </a>
+                    <li class="collapse navbar-collapse" id="navbarCollapse">
+                        <ul class="navbar-nav ms-auto">
+                            <!-- Profile Icon Dropdown -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="/img/profile-user.png" class="rounded-circle" alt="Profile Icon" style="width: 40px; height: 40px;">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                    <li><a class="dropdown-item" href="#">Your Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
-                </ul>
-              </li>
+                }
+                else
+                {
+                    <div class="navbar-nav ml-auto">
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary px-3 d-none d-lg-flex">Log In</a>
+                        <p>&nbsp;</p>
+                    </div>
+                }
+            </div>
         </nav>
     </div>
     <div>
-    <!-- end Header -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-auto bg-light sticky-top">
-                    <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top " style="margin-left:10px">
-                        <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
-                            <li>
-                                <a class="nav-link py-3 px-2" title="Agencies" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Agencies" asp-area="" asp-controller="Admin" asp-action="Agencies">
-                                    <i class="bi-people fs-1"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="nav-link py-3 px-2" title="Properties" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Properties" asp-area="" asp-controller="Admin" asp-action="Properties">
-                                    <i class="bi-house fs-1"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="nav-link py-3 px-2" title="Users" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Users" asp-area="" asp-controller="Admin" asp-action="Users">
-                                    <i class="bi bi-person-check fs-1"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-sm p-3 min-vh-100">
-                    @RenderBody()
-
-                </div>
-            </div>
+        <!-- end Header -->
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
         </div>
+
     </div>
     <!-- Start footer -->
     <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
