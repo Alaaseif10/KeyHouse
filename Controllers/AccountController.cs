@@ -79,6 +79,7 @@ namespace KeyHouse.Controllers
             user.AgencyName = newUser.AgencyName;
             user.AgencyDescription = newUser.AgencyDescription;
             user.NumCompany = newUser.NumCompany;
+            user.AgencyStatus = 1;
             user.logo = $"/logo/{fileName}";
             IdentityResult result = await _userManager.CreateAsync(user, newUser.Password);
             if (result.Succeeded)
