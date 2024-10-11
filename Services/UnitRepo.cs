@@ -147,7 +147,7 @@ namespace KeyHouse.Services
         public List<Units> GetAllUnits()
         {
 
-            List<Units> units = context.Units.ToList();
+            List<Units> units = context.Units.Include(a=>a.Images).Include(u=>u.Blocks).ToList();
             return units;
         }
 

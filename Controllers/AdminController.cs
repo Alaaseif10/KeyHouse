@@ -3,6 +3,7 @@ using KeyHouse.Models.Entities;
 using KeyHouse.ModelView;
 using KeyHouse.services;
 using KeyHouse.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -12,6 +13,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace KeyHouse.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class AdminController : Controller
     {
 
@@ -143,7 +145,13 @@ namespace KeyHouse.Controllers
         public IActionResult ApproveAgency(string AgencyID)
         {
             AgencyRepo AgencyRepository = new AgencyRepo(_context);
-            AgencyRepository.EditAgencyStatus(AgencyID);
+            AgencyRepository.EditAgencyStatus(AgencyID,3);
+            return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
+        }
+        public IActionResult RejectAgency(string AgencyID)
+        {
+            AgencyRepo AgencyRepository = new AgencyRepo(_context);
+            AgencyRepository.EditAgencyStatus(AgencyID,2);
             return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
         }
 

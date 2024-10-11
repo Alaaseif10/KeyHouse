@@ -1,11 +1,13 @@
 ﻿using KeyHouse.Models.Entities;
 using KeyHouse.ModelView;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace KeyHouse.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
 
@@ -95,7 +97,7 @@ namespace KeyHouse.Controllers
 
             }
 
-            return View("Register", newUser);
+            return View("RegisterAgency", newUser);
 
         }
 
@@ -150,7 +152,11 @@ namespace KeyHouse.Controllers
                         if (result.Succeeded)
                         {
                             await _signInManager.SignInAsync(user, isPersistent: false);
-                            return RedirectToAction("Index", "Home");
+                            if (user is Admin admin)
+                                return RedirectToAction("DashBoard", "Admin");
+                            else
+                                return RedirectToAction("Index", "Home");
+
                         }
                         else
                         {

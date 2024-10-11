@@ -24,6 +24,8 @@
   <ItemGroup>
     <Folder Include="Views\KeyHouse\" />
     <Folder Include="wwwroot\logo\" />
+    <Folder Include="wwwroot\logo\" />
+    <Folder Include="wwwroot\unitImages\" />
     <Folder Include="wwwroot\unitImages\" />
   </ItemGroup>
 

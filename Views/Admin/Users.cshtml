@@ -14,33 +14,25 @@
             <div class="row g-4">
                 @foreach (var item in Model)
                 {
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="team-item rounded overflow-hidden">
-                            <div class="position-relative">
-                                <div class="position-absolute start-50 top-100 translate-middle d-flex align-items-center">
-                                </div>
-                            </div>
-                            <div class="text-center p-4 mt-3">
-                                <h5 class="fw-bold mb-0">@item.UserName</h5>
-                                <label>Uesr Email:</label><small>@item.Email</small>
-                                <br />
-                                <label>Uesr Phone:</label><small>@item.PhoneNumber</small>
-                                <br />
-                                <label>User Type:</label><small>@(item.AgencyName != null ? "Agency" : "User")</small>
-                                <br />
-                                @if (@item.AgencyName != null)
-                                {
-                                    <label> Agency Name:</label>
-                                    <small>@item.AgencyName  </small>
-                                    <br/>
-                                }
-                                <label>Status : </label><small> @(item.status == 1 ? "Active" : "Inactive")</small>
-                                <br />
-                                <label>Creation Date : </label><small> @item.Creation_date.Date.ToString("dd/MM/yyyy") </small>
-
-                            </div>
+                    <div class="card" style="width: 18rem; margin:5px">
+                        <img src="~/img/profile-user.png" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-0">@item.UserName</h5>
+                            <p> <i class="bi bi-envelope-fill"></i> @item.Email</p>
+                            <p> <i class="bi bi-telephone-fill"></i> @item.PhoneNumber</p>
+                            <p>Status : @(item.status == 1 ? "Active" : "Inactive")</p>
+                            <p>Creation Date : @item.Creation_date.Date.ToString("dd/MM/yyyy")  </p>
+                            <p class="form-label"> User Type: @(item.AgencyName != null ? "Agency" : "User")</p>
+                            @if (@item.AgencyName != null)
+                            {
+                                <p>
+                                    Agency Name:
+                                    @item.AgencyName
+                                </p>
+                            }
                         </div>
                     </div>
+                 
                 }
             </div>
         </div>

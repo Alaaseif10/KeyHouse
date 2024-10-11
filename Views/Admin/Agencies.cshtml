@@ -6,34 +6,26 @@
 @using X.PagedList.Mvc.Core;
 <section>
     <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+        <div class="container" >
+            <div class="text-center mx-auto mb-5 wow fadeInUp " data-wow-delay="0.1s" style="max-width: 600px;">
                 <h1 class="mb-3">All Agencies</h1>
 
             </div>
             <div class="row g-4">
                 @foreach (var item in Model)
                 {
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="team-item rounded overflow-hidden">
-                            <div class="position-relative">
-                                <img class="img-fluid" src="~/img/@item.logo" alt="">
-                                <div class="position-absolute start-50 top-100 translate-middle d-flex align-items-center">
-                                </div>
-                            </div>
-                            <div class="text-center p-4 mt-3">
-                                <h5 class="fw-bold mb-0">@item.AgencyName</h5>
-                                <p> Contact Email: @item.Email</p>
-                                <br />
-                                <p> Contact Phone: @item.PhoneNumber</p>
-                                <br />
-                                <p class="form-label"> Status: @(item.AgencyStatus == 1 ? "Pending" : item.AgencyStatus == 2 ? "Rejected" : "Approved")</p>
-                                <br />
-                                <a class="btn btn-primary" href="@Url.Action("GetAgenciesDetails", "Admin", new { id = item.Id })">Details</a>
-
-                            </div>
+                    <div class="card" style="width: 18rem; margin:5px">
+                        <img src="~/logo/@item.logo" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-0">@item.AgencyName</h5>
+                            <p> <i class="bi bi-envelope-fill"></i> @item.Email</p>
+                            <p> <i class="bi bi-telephone-fill"></i> @item.PhoneNumber</p>
+                            <p> Commercial Register: @item.NumCompany</p>
+                            <p class="form-label"> Status: @(item.AgencyStatus == 1 ? "Pending" : item.AgencyStatus == 2 ? "Rejected" : item.AgencyStatus == 3 ? "Approved" : "Not Defined")</p>
+                            <a class="btn btn-primary" href="@Url.Action("GetAgenciesDetails", "Admin", new { id = item.Id })">Details</a>
                         </div>
                     </div>
+                 
                 }
             </div>
         </div>
@@ -43,3 +35,4 @@
     LiElementClasses = new string[] { "page-item" },
     PageClasses = new string[] { "page-link" }
 })
+</section>

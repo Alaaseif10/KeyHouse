@@ -70,10 +70,10 @@ namespace KeyHouse.services
             //olddata.logo = newData.logo;
             context.SaveChanges();
         }
-        public void EditAgencyStatus(String agencyId)
+        public void EditAgencyStatus(String agencyId ,int AgencyStatus)
         {
             Agencies olddata = context.Agencies.SingleOrDefault(a => a.Id == agencyId);
-            olddata.AgencyStatus = 3;
+            olddata.AgencyStatus = AgencyStatus;
             context.SaveChanges();
         }
     }
