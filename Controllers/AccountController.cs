@@ -7,12 +7,12 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace KeyHouse.Controllers
 {
-    [Authorize]
     public class AccountController : Controller
     {
 
         UserManager<Users> _userManager;
         SignInManager<Users> _signInManager;
+        
         public AccountController(UserManager<Users> userManager, SignInManager<Users> signInManager)
         {
             _userManager = userManager;
@@ -153,6 +153,7 @@ namespace KeyHouse.Controllers
                         {
                             await _signInManager.SignInAsync(user, isPersistent: false);
                             if (user is Admin admin)
+                                
                                 return RedirectToAction("DashBoard", "Admin");
                             else
                                 return RedirectToAction("Index", "Home");

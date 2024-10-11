@@ -9,7 +9,7 @@ namespace KeyHouse
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +19,16 @@ namespace KeyHouse
 
             builder.Services.AddDbContext<KeyHouseDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Local")));
 
-            builder.Services.AddIdentity<Users, IdentityRole>().AddEntityFrameworkStores<KeyHouseDB>();
+            builder.Services.AddIdentity<Users, IdentityRole>().AddRoles<IdentityRole>().AddEntityFrameworkStores<KeyHouseDB>();
             var app = builder.Build();
+
+
+            // Call the method to create roles within a scope
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                await CreateRoles(services);
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -41,8 +49,48 @@ namespace KeyHouse
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.Run();
+            await app.RunAsync();
+            // Method to create roles
+            async Task CreateRoles(IServiceProvider serviceProvider)
+            {
+                // Get RoleManager and UserManager services
+                var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = serviceProvider.GetRequiredService<UserManager<Users>>();
 
+                // List of roles to create
+                string[] roleNames = { "Admin", "Users", "Agencies" };
+
+                foreach (var roleName in roleNames)
+                {
+                    // Check if the role exists, and create if not
+                    var roleExists = await roleManager.RoleExistsAsync(roleName);
+                    if (!roleExists)
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(roleName));
+                    }
+                }
+
+                // Optionally: create a default admin user
+                var adminEmail = "admin@gg.com";
+                var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+                if (adminUser == null)
+                {
+                    var admin = new Admin
+                    {
+                        UserName = adminEmail,
+                        Email = adminEmail
+                    };
+
+                    var createAdmin = await userManager.CreateAsync(admin, "Admin@123");
+
+                    if (createAdmin.Succeeded)
+                    {
+                        // Add the admin user to the "Admin" role
+                        await userManager.AddToRoleAsync(admin, "Admin");
+                    }
+                }
+            }
 
         }
     }
