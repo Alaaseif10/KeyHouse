@@ -7,9 +7,17 @@ namespace KeyHouse.Controllers
     {
         public IActionResult Index()
         {
-           // Locations locations = new Locations();
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("DashBoard", "Admin");
+            }
+            // Locations locations = new Locations();
             //locations.Insertion();
-            return View();
+            else
+            {
+                return View();
+            }
+
         }
         public IActionResult About()
         {
