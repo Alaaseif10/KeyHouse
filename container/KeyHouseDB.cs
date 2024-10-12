@@ -11,6 +11,13 @@ namespace KeyHouse.container
         public KeyHouseDB() { }
         public KeyHouseDB(DbContextOptions<KeyHouseDB> options):base(options) { }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=MA7O\\SQLEXPRESS;Database=KeyHouseDB;User Id=MA7O;password=;Integrated security=True;Encrypt=False;Trusted_Connection=True; TrustServerCertificate = True");
+            }
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<Interest>().HasKey(td => new { td.UsersId, td.UnitsId });

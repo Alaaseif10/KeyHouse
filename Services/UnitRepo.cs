@@ -146,9 +146,14 @@ namespace KeyHouse.Services
         }
         public List<Units> GetAllUnits()
         {
+            using (var context = new KeyHouseDB())
+            {
+                List<Units> units = context.Units.Include(a => a.Images).Include(u => u.Blocks).ToList();
+                return units;
+            }
 
-            List<Units> units = context.Units.Include(a=>a.Images).Include(u=>u.Blocks).ToList();
-            return units;
+         //   List<Units> units = context.Units.Include(a=>a.Images).Include(u=>u.Blocks).ToList();
+            
         }
 
         #endregion
