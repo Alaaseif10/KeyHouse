@@ -25,7 +25,10 @@ namespace KeyHouse.Services
         {
             return context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Id == id);
         }
-
+        public Admin GetAdmin()
+        {
+            return context.Admin.FirstOrDefault();
+        }
         public Users ValidateUserByEmail(string email, string password)
         {
             return context.Users.Include(s => s.Agencies).SingleOrDefault(s => s.Email == email && s.PasswordHash == password);

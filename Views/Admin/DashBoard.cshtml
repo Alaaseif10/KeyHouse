@@ -1,18 +1,94 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+@model X.PagedList.IPagedList<KeyHouse.Models.Entities.Agencies>
+@using X.PagedList.Mvc.Core;
 <section class="py-3 py-md-5">
 
-    <div>
-        <canvas id="doughnut-chart"></canvas>
+    <div class="container-fluid pt-4 px-4 border border-white" style="background-color:white; background-clip:border-box">
+        <div class="row g-4">
+            <div class="col-sm-6 col-xl-3">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-line fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Total Users</p>
+                        <h6 class="mb-0">@ViewBag.Users</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Total Agencies</p>
+                        <h6 class="mb-0">@ViewBag.Agency</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-area fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Total Properties</p>
+                        <h6 class="mb-0">@ViewBag.Properites</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row g-4 align-content-center">
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-light text-center rounded p-4">
+                    <canvas id="doughnut-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- Recent Sales Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="bg-light text-center rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0">Added Agencies Today</h6>
+                    <a asp-area="" asp-controller="Admin" asp-action="Agencies">Show All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table text-start align-middle table-bordered table-hover mb-0">
+                        <thead>
+                            <tr class="text-dark">
+                                <th scope="col">Date</th>
+                                <th scope="col">Agency Name</th>
+                                <th scope="col">Commercial Register</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Creation_date.Date</td>
+                                    <td>@item.AgencyName</td>
+                                    <td>@item.NumCompany</td>
+                                    <td><a class="btn btn-sm btn-primary" href="@Url.Action("GetAgenciesDetails", "Admin", new { id = item.Id })">Detail</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+    @Html.PagedListPager(Model, page => Url.Action("Users", new { page }), new PagedListRenderOptions
+{
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" }
+})
+
 </section>
 <script>
     // Sample data (you can pass your model data here)
     var data = {
         labels: ['Users', 'Agencies', 'Properties'], // Change labels based on your data
         datasets: [{
-            label: 'My First Dataset',
+            label: 'Key House Dataset',
             data: [@ViewBag.Users, @ViewBag.Agency, @ViewBag.Properites], // Change data based on your data
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',

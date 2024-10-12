@@ -18,6 +18,10 @@ namespace KeyHouse.services
         {
             return context.Agencies.ToList();
         }
+        public List<Agencies> GetAddedAgencyByToday()
+        {
+            return context.Agencies.Where(a => a.AgencyStatus == 1 && a.Creation_date.Date == DateTime.Today).ToList();
+        }
         public List<Agencies> GetFilteredAgencies(int status)
         {
             return context.Agencies.Where(a => a.AgencyStatus == status).ToList();
