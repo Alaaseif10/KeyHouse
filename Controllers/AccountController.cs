@@ -135,8 +135,14 @@ namespace KeyHouse.Controllers
                             SignInResult result = await _signInManager.PasswordSignInAsync(user, LoginUser.Password, false, false);
                             if (result.Succeeded)
                             {
-                                // Create Cookie and sign in
-                                await _signInManager.SignInAsync(user, isPersistent: false);
+                                if (user is Agencies) 
+                                {
+                                    //Assign Role in Agencies
+                                    await _userManager.AddToRoleAsync(user, "Agencies");
+                                }
+
+                                    // Create Cookie and sign in
+                                    await _signInManager.SignInAsync(user, isPersistent: false);
                                 return RedirectToAction("Index", "Home");
                             }
                             else
