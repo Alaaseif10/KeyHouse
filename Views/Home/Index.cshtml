@@ -1,11 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-@model IEnumerable<KeyHouse.Models.Entities.Units>
+﻿@model IEnumerable<KeyHouse.Models.Entities.Units>
+@using static KeyHouse.Models.Enums;
 
 @{
     ViewBag.Title = "units";
+    ViewData["Title"] = "Home Page";
 }
 
 
@@ -49,12 +47,9 @@
             </div>
         </div>
         <!-- Spinner End -->
-
-
         <br>
         <br>
         <br>
-
         <!-- Header Start -->
         <div class="container-fluid header bg-white p-0">
             <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
@@ -69,50 +64,16 @@
                 <div class="col-md-6 animated fadeIn">
                     <div class="owl-carousel header-carousel">
                         <div class="owl-carousel-item">
-                            <img class="img-fluid" src="img/carousel-1.jpg" alt="">
+                            <img class="img-fluid" src="img/carousel-1.jpg" alt="IMG">
                         </div>
                         <div class="owl-carousel-item">
-                            <img class="img-fluid" src="img/carousel-2.jpg" alt="">
+                            <img class="img-fluid" src="img/carousel-2.jpg" alt="IMG">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Header End -->
-        <!-- Search Start -->
-        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
-            <div class="container">
-                <div class="row g-2">
-                    <div class="col-md-10">
-                        <div class="row g-2">
-                            <div class="col-md-4">
-                                <input type="text" class="form-control border-0 py-3" placeholder="Search Keyword">
-                            </div>
-                            <div class="col-md-4">
-                                <select class="form-select border-0 py-3">
-                                    <option selected>Property Type</option>
-                                    <option value="1">Property Type 1</option>
-                                    <option value="2">Property Type 2</option>
-                                    <option value="3">Property Type 3</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <select class="form-select border-0 py-3">
-                                    <option selected>Location</option>
-                                    <option value="1">Location 1</option>
-                                    <option value="2">Location 2</option>
-                                    <option value="3">Location 3</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-dark border-0 w-100 py-3">Search</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Search End -->
         <!-- About Start -->
         <div class="container-xxl py-5">
             <div class="container">
@@ -134,8 +95,46 @@
             </div>
         </div>
         <!-- About End -->
-        <!-- Property List Start -->
 
+
+
+        <!-- Search Start -->
+            <form method="get" action="@Url.Action("Index", "Home")">
+                <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+                    <div class="container">
+                        <div class="row g-2">
+                            <div class="col-md-10">
+                                <div class="row g-2">
+                                    <div class="col-md-4">
+                                        <select class="form-select border-0 py-3" id="category_dropdown">
+                                            <option selected>Choose...</option>
+                                            @foreach (var category in Enum.GetValues(typeof(PropertyCategory)))
+                                            {
+                                                <option value="@category">@category</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-select border-0 py-3" id="type_dropdown">
+                                           <option selected>Choose...</option>
+                                                @foreach (var type in Enum.GetValues(typeof(PropertyType)))
+                                                {
+                                                    <option value="@type" data_category="@((int)type <= 4 ? PropertyCategory.Residential : PropertyCategory.Commercial)">@type</option>
+                                                }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-dark border-0 w-100 py-3">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        <!-- Search End -->
+       
+        <!-- Property List Start -->
 
         <div class="container-xxl py-5">
             <div class="container">
@@ -143,88 +142,80 @@
                     <div class="col-lg-6">
                         <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
                             <h1 class="mb-3">Property Listing</h1>
-                            <p>Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut dolore lorem kasd vero ipsum sit eirmod sit diam justo sed rebum.</p>
                         </div>
                     </div>
-                    <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
-                        <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
-                            <li class="nav-item me-2">
-                                <a class="btn btn-outline-primary active" data-bs-toggle="pill" href="#tab-1">Featured</a>
-                            </li>
-                            <li class="nav-item me-2">
-                                <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-2">For Sell</a>
-                            </li>
-                            <li class="nav-item me-0">
-                                <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-3">For Rent</a>
-                            </li>
-                        </ul>
-                    </div>
+                    
                 </div>
 
-
-
-
+                @* Show Card*@
                 <div class="row">
-                    @foreach (var units in Model)
+                    @if (ViewBag.Units != null && ((List<KeyHouse.Models.Entities.Units>)ViewBag.Units).Any())
                     {
-                        <div class="col-md-3 mb-4 rad">
-                            <div class="card h-100  ">
-
-                                <!-- Carousel for multiple img -->
-                                <div id="carousel-@units.Id" class="carousel slide" data-ride="carousel" data-interval="2000">
-
-                                    <div class="carousel-inner ">
-                                        @if (units.Images != null && units.Images.Any())
-                                        {
-                                            @for (int i = 0; i < units.Images.Count(); i++)
+                        foreach (var unit in (List<KeyHouse.Models.Entities.Units>)ViewBag.Units)
+                        {
+                            <div class="col-md-3 mb-4 rad">
+                                <div class="card h-100">
+                                    <!-- Carousel for multiple images -->
+                                    <div id="carousel-@unit.Id" class="carousel slide" data-ride="carousel" data-interval="2000">
+                                        <div class="carousel-inner">
+                                            @if (unit.Images != null && unit.Images.Any())
                                             {
-                                                <div class="carousel-item @(i == 0 ? "active" : "")">
-                                                    <img class="d-block w-100" src="~/unitImages/@Url.Content(units.Images.ElementAt(i).Img_Path)" alt="@units.Unit_Title">
-
+                                                for (int i = 0; i < unit.Images.Count(); i++)
+                                                {
+                                                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                                                        <img class="d-block w-100" src="@Url.Content("~/unitImages/" + unit.Images.ElementAt(i).Img_Path)" alt="@unit.Unit_Title">
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <!-- Fallback if no images are available -->
+                                                <div class="carousel-item active">
+                                                    <img class="d-block w-100" src="/img/default.jpg" alt="No image available">
                                                 </div>
                                             }
-                                        }
-                                        else
-                                        {
-                                            <!-- Fallback if no img are available -->
-                                            <div class="carousel-item active">
-                                                <img class="d-block w-100" src="/img/default.jpg" alt="No image available">
-                                            </div>
-                                        }
+                                        </div>
+
+                                        <!-- Carousel controls -->
+                                        <a class="carousel-control-prev" href="#carousel-@unit.Id" role="button" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carousel-@unit.Id" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
                                     </div>
 
-                                    <!-- Carousel controls -->
-                                    <a class="carousel-control-prev" href="#carousel-@units.Id" role="button" data-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carousel-@units.Id" role="button" data-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </div>
-
-                                <div class="card-body">
-                                    <div class="p-4 pb-0">
-                                        <h5 class="text-primary mb-3">$ @units.Price</h5>
-                                        <a class="d-block h5 mb-2" href="">@units.Unit_Description</a>
-                                        <p><i class="fa fa-map-marker-alt text-primary me-2"></i>@units.Blocks.Block_Name</p>
+                                    <div class="card-body">
+                                        <div class="p-4 pb-0">
+                                            <h5 class="text-primary mb-3">$ @unit.Price</h5>
+                                            <a class="d-block h5 mb-2" href="#">@unit.Unit_Description</a>
+                                            <p><i class="fa fa-map-marker-alt text-primary me-2"></i>@unit.Blocks.Block_Name</p>
+                                        </div>
+                                        <h5 class="card-title">@unit.Unit_Title</h5>
+                                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>@unit.Area</small>
+                                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>@unit.Num_Rooms</small>
+                                        <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>@unit.Num_Bathrooms</small>
                                     </div>
-                                    <h5 class="card-title">@units.Unit_Title</h5>
-                                    <small class="flex-fill text-center border-end py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>@units.Area</small>
-                                    <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>@units.Num_Rooms</small>
-                                    <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>@units.Num_Bathrooms</small>
-
-                                </div>
-                                <div class="card-footer">
-                                    <a class="btn btn-primary" asp-action="Unit" asp-route-id="@units.Id">Details</a>
-
+                                    <div class="card-footer">
+                                        <a href="#" class="btn btn-primary">Buy Now</a>
+                                    </div>
                                 </div>
                             </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <p>No units found.</p>
                         </div>
                     }
                 </div>
-            </div>
+                @* End Show Card*@ 
+            </div>                  
+       </div>
+    </div>
 
 
 
@@ -494,6 +485,51 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <!-- style Dorwp -->
+    <script>
+        document.getElementById('category_dropdown').addEventListener('change', function () {
+            var selectedCategory = this.value;
+            var typeDropdown = document.getElementById('type_dropdown');
+
+            for (var i = 0; i < typeDropdown.options.length; i++) {
+                var option = typeDropdown.options[i];
+                var category = option.getAttribute('data_category');
+                // Show or hide the option based on the selected category
+                if (category === selectedCategory) {
+                    option.style.display = 'block';
+                } else {
+                    option.style.display = 'none';
+                }
+            }
+            typeDropdown.selectedIndex = 0;
+        });
+    </script>
+
+    @section Scripts {
+        <script src="/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(document).ready(function () {
+                    $('#category_dropdown').change(function () {
+                        var Category = $(this).val();
+                        if (Category === 'Commercial') {
+                            $('#noBeds').prop('disabled', true);
+                            $('#noBaths').prop('disabled', true);
+                        }
+                        else {
+                            $('#noBeds').prop('disabled', false);
+                            $('#noBaths').prop('disabled', false);
+                        }
+                    })
+                })
+            });
+        </script>
+    }
 
 
 

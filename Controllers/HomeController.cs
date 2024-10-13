@@ -2,7 +2,10 @@
 using KeyHouse.Models.Entities;
 using KeyHouse.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using static KeyHouse.Models.Enums;
 
 namespace KeyHouse.Controllers
 {
@@ -22,8 +25,16 @@ namespace KeyHouse.Controllers
            
             else
             {
-                List<Units> units = new UnitRepo(_context).GetAllUnits();
-                return View(units);
+                #region data
+                ViewBag.PropertySellType = new SelectList(Enum.GetValues(typeof(PropertySellType)));
+                ViewBag.PropertyCategory = new SelectList(Enum.GetValues(typeof(PropertyCategory)));
+                ViewBag.PropertyType = new SelectList(Enum.GetValues(typeof(PropertyType)));
+                var units = new UnitRepo(_context).GetAllUnits();
+                ViewBag.Units = units;
+                #endregion
+
+                
+                return View("Index");
             }
 
         }

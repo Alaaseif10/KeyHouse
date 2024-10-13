@@ -9,15 +9,10 @@ namespace KeyHouse.Services
 {
     public class UnitRepo
     {
-        // KeyHouseDB context = new KeyHouseDB();
-
         KeyHouseDB context;
-
         public UnitRepo(KeyHouseDB _context)
         {
             context = _context;
-      
-
         }
         #region IED
 
@@ -148,16 +143,17 @@ namespace KeyHouse.Services
             .ToList();
             return units;
         }
+
+        /// <summary>
+        /// GET ALL UNITS
+        /// </summary>
+        /// <returns></returns>
         public List<Units> GetAllUnits()
         {
-           
-                List<Units> units = context.Units.Include(a => a.Images).Include(u => u.Blocks).ToList();
-                return units;
-           
-
-         //   List<Units> units = context.Units.Include(a=>a.Images).Include(u=>u.Blocks).ToList();
-            
+            List<Units> units = context.Units.Include(a => a.Images).Include(u => u.Blocks).ToList();
+            return units;     
         }
+
 
         #endregion
     }
