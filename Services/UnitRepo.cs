@@ -121,8 +121,12 @@ namespace KeyHouse.Services
         /// <returns></returns>
         public Units GetUnitById(int id )
         {
-            return context.Units.SingleOrDefault(u => u.Id == id && u.Agencies.Contracts
-            .Any(c => c.End_date > u.Added_Date));
+            /*return context.Units.SingleOrDefault(u => u.Id == id ).;
+            List<Units> units = context.Units.Include(a => a.Images).Include(u => u.Blocks).ToList();
+*/
+            return context.Units.Include(a => a.Images).Include(b=>b.Blocks).Include(a=> a.Agencies).SingleOrDefault(u => u.Id == id);
+
+
 
         }
         /// <summary>

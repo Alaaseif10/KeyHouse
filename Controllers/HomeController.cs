@@ -46,5 +46,12 @@ namespace KeyHouse.Controllers
         {
             return View();
         }
+
+        public IActionResult Unit(int id)
+        {
+            UnitRepo UnitRepository = new(_context);
+            Units Unit = UnitRepository.GetUnitById(id);
+            return View("Unit",Unit);
+        }
     }
 }

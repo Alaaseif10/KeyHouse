@@ -1,0 +1,134 @@
+﻿<section class="py-3 py-md-5">
+    <div class="container">
+        <div class="bg-light rounded p-3">
+            <div class="bg-white rounded p-4" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                <div class="row g-5 align-items-center">
+
+
+
+                    <div id="carousel-@Model.Id" class="carousel slide col-lg-6 wow fadeIn" data-ride="carousel" data-interval="2000">
+
+                        <div class="carousel-inner ">
+                            @if (Model.Images != null)
+                            {
+                                int index = 0;
+                                @foreach (var image in Model.Images)
+                                {
+                                    <div class="carousel-item @(index == 0 ? "active" : "")  position-relative overflow-hidden p-5 pe-0">
+                                        <img class="d-block w-100" src="~/unitImages/@image.Img_Path)" alt="@Model.Unit_Title">
+
+                                    </div>
+                                    index++;
+                                }
+                            }
+                            else
+                            {
+                                <!-- Fallback if no img are available -->
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100" src="/img/default.jpg" alt="No image available">
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Carousel controls -->
+                        <a class="carousel-control-prev" href="#carousel-@Model.Id" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carousel-@Model.Id" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+
+
+                    <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="team-item rounded overflow-hidden">
+                                <div class="position-relative">
+                                    <img class="img-fluid" src="img/team-1.jpg" alt="Agency Image">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mb-4">
+                            <h2 class="mb-3">Agency Name</h2>
+                            <p>Agency Description</p>
+                        </div>
+                        <a href="" class="btn btn-primary py-3 px-4 me-2">I'm Interested</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-xxl py-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h1>@Model.Price <span class="text-primary">EGP</span></h1>
+                        <p><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Blocks.Block_Name</p>
+                        
+                        <div class="d-flex gap-5 mb-3">
+                            <Large class="flex-fill   py-2"><i class="fa fa-ruler-combined text-primary me-2" ></i>@Model.Area</Large>
+                            <Medium class="flex-fill   py-2"><i class="fa fa-bed text-primary me-2"></i>@Model.Num_Rooms</Medium>
+                            <Medium class="flex-fill  py-2"><i class="fa fa-bath text-primary me-2" ></i>@Model.Num_Bathrooms</Medium>
+                        </div>
+                        <p class=" mb-4">@Model.Unit_Description</p>
+
+                        <h3>Unit Information</h3>
+
+                        <div class="col-12 mb-3">
+                            <div class="row gy-4">
+                                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                                    <div class="bg-light rounded p-2">
+                                        <div class="d-flex align-items-center bg-white rounded p-2" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                                            <p>Type:  <span class="text-primary">@Model.Unit_Title</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                                    <div class="bg-light rounded p-2">
+                                        <div class="d-flex align-items-center bg-white rounded p-2" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                                            <p>Category:  <span class="text-primary">@Model.Type_Unit</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                                    <div class="bg-light rounded p-2">
+                                        <div class="d-flex align-items-center bg-white rounded p-2" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                                            <p>Sell Type:  <span class="text-primary">@Model.Type_Rent</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-5">
+                            <div class="row gy-4">
+                                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                                    <div class="bg-light rounded p-2">
+                                        <div class="d-flex align-items-center bg-white rounded p-2" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                                            <p>Completion:  <span class="text-primary">@Model.Under_constracting_Status</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                                    <div class="bg-light rounded p-2">
+                                        <div class="d-flex align-items-center bg-white rounded p-2" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                                            <p>Added Date:  <span class="text-primary">@Model.Added_Date.ToString("MMM/dd/yyyy")</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>Benefit Services</h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</section>
