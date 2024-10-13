@@ -7,8 +7,8 @@
 @{
     ViewBag.Title = "units";
 }
-<p>Welcome to home</p>
-@* 
+
+
 <head>
     <meta charset="utf-8">
     <title>Key House </title>
@@ -179,7 +179,7 @@
                                             @for (int i = 0; i < units.Images.Count(); i++)
                                             {
                                                 <div class="carousel-item @(i == 0 ? "active" : "")">
-                                                    <img class="d-block w-100" src="~/img/@Url.Content(units.Images.ElementAt(i).Img_Path)" alt="@units.Unit_Title">
+                                                    <img class="d-block w-100" src="~/unitImages/@Url.Content(units.Images.ElementAt(i).Img_Path)" alt="@units.Unit_Title">
 
                                                 </div>
                                             }
@@ -499,6 +499,6 @@
 </body>
 
 
- *@
+
 
 
