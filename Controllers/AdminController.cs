@@ -22,7 +22,7 @@ namespace KeyHouse.Controllers
         {
             _context = context;
         }
-        public IActionResult DashBoard()
+        public IActionResult DashBoard(int? page)
         {
             AgencyRepo AgencyRepository = new AgencyRepo(_context);
             List<Agencies> Agencies = AgencyRepository.GetAllAgencies();
@@ -36,7 +36,13 @@ namespace KeyHouse.Controllers
             ViewBag.Users = users.Count;
             ViewBag.Agency = Agencies.Count;
             ViewBag.Properites = Units.Count;
-            return View();
+            List<Agencies> addedAgenciesToday = AgencyRepository.GetAddedAgencyByToday();
+            int pageNumber = page ?? 1;
+            int pageSize = 8;
+
+            // Use X.PagedList to paginate the data
+            var pagedData = addedAgenciesToday.ToPagedList(pageNumber, pageSize);
+            return View(pagedData);
         }
         public IActionResult GetAgenciesDetails(string id)
         {
@@ -155,6 +161,11 @@ namespace KeyHouse.Controllers
             return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
         }
 
-
+        public IActionResult Profile()
+        {
+            UserRepository userRepository = new UserRepository(_context);
+            Admin Admin = userRepository.GetAdmin();
+            return View(Admin);
+        }
     }
 }
