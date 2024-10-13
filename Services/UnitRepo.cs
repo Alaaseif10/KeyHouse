@@ -124,12 +124,12 @@ namespace KeyHouse.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Units GetUnitById(int id )
+        public Units GetUnitById(int id)
         {
             /*return context.Units.SingleOrDefault(u => u.Id == id ).;
             List<Units> units = context.Units.Include(a => a.Images).Include(u => u.Blocks).ToList();
 */
-            return context.Units.Include(a => a.Images).Include(b=>b.Blocks).Include(a=> a.Agencies).SingleOrDefault(u => u.Id == id);
+            return context.Units.Include(a => a.Images).Include(b => b.BenefitsServices).Include(b => b.Blocks).Include(a => a.Agencies).SingleOrDefault(u => u.Id == id);
 
 
 
