@@ -363,5 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /container/KeyHouseDB.cs
 *.jpeg
-/appsettings.json
 /.gitignore

@@ -1,4 +1,5 @@
-﻿<section class="py-3 py-md-5">
+﻿@model KeyHouse.Models.Entities.Units
+<section class="py-3 py-md-5">
     <div class="container">
         <div class="bg-light rounded p-3">
             <div class="bg-white rounded p-4" style="border: 1px dashed rgba(0, 185, 142, .3)">
@@ -12,21 +13,21 @@
                             @if (Model.Images != null)
                             {
                                 int index = 0;
-                                @foreach (var image in Model.Images)
+                            @foreach (var image in Model.Images)
                                 {
-                                    <div class="carousel-item @(index == 0 ? "active" : "")  position-relative overflow-hidden p-5 pe-0">
-                                        <img class="d-block w-100" src="~/unitImages/@image.Img_Path)" alt="@Model.Unit_Title">
+                            <div class="carousel-item @(index == 0 ? "active" : "")  position-relative overflow-hidden p-5 pe-0">
+                                <img class="d-block w-100" src="~/unitImages/@image.Img_Path)" alt="@Model.Unit_Title">
 
-                                    </div>
+                            </div>
                                     index++;
                                 }
                             }
                             else
                             {
-                                <!-- Fallback if no img are available -->
-                                <div class="carousel-item active">
-                                    <img class="d-block w-100" src="/img/default.jpg" alt="No image available">
-                                </div>
+ <!-- Fallback if no img are available -->
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" src="/img/default.jpg" alt="No image available">
+                            </div>
                             }
                         </div>
 
@@ -67,11 +68,11 @@
                     <div class="row">
                         <h1>@Model.Price <span class="text-primary">EGP</span></h1>
                         <p><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Blocks.Block_Name</p>
-                        
+
                         <div class="d-flex gap-5 mb-3">
-                            <Large class="flex-fill   py-2"><i class="fa fa-ruler-combined text-primary me-2" ></i>@Model.Area</Large>
+                            <Large class="flex-fill   py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>@Model.Area</Large>
                             <Medium class="flex-fill   py-2"><i class="fa fa-bed text-primary me-2"></i>@Model.Num_Rooms</Medium>
-                            <Medium class="flex-fill  py-2"><i class="fa fa-bath text-primary me-2" ></i>@Model.Num_Bathrooms</Medium>
+                            <Medium class="flex-fill  py-2"><i class="fa fa-bath text-primary me-2"></i>@Model.Num_Bathrooms</Medium>
                         </div>
                         <p class=" mb-4">@Model.Unit_Description</p>
 
@@ -122,6 +123,16 @@
                         </div>
 
                         <h3>Benefit Services</h3>
+                        @foreach (var benefit in Model.BenefitsServices)
+                        {
+                        <div class="col-md-6 col-lg-4 wow fadeIn mb-3" data-wow-delay="0.1s">
+                            <div class="bg-light rounded p-2">
+                                <div class="d-flex align-items-center bg-white rounded p-2" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                                    <p>@benefit.BenefitsName</p>
+                                </div>
+                            </div>
+                        </div>
+                        }
 
                     </div>
                 </div>
@@ -132,3 +143,6 @@
 
 
 </section>
+
+
+
