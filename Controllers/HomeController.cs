@@ -18,7 +18,7 @@ namespace KeyHouse.Controllers
             _context = context;
         }
         private readonly KeyHouseDB _context;
-        public IActionResult Index(string category = null, string type = null, int? page=1 )
+        public IActionResult Index(string category , string type , int area1=0 , int area2 = 0,int price1=0,int price2=0,  int? page=1 )
         {
             if (User.IsInRole("Admin"))
             {
@@ -35,10 +35,14 @@ namespace KeyHouse.Controllers
                 List<Units> units = new UnitRepo(_context).GetAllUnits();
 
                 // If category or type is selected, filter the units
-                if (!string.IsNullOrEmpty(category) || !string.IsNullOrEmpty(type))
-                    units = new UnitRepo(_context).GetFilteredUnits(category, type);
+                
+                if (
+                   ( !string.IsNullOrEmpty(category) && !string.IsNullOrEmpty(type) )
+                    || (area1 >0 && area2 >0) || (price1>0 && price2 >0)
+                   )
+                    units = new UnitRepo(_context).GetFilteredUnits(category, type,area1 ,area2, price1 ,price2 ); 
 
-                else 
+                else
                     units = new UnitRepo(_context).GetAllUnits();
 
 
