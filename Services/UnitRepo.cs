@@ -1,8 +1,10 @@
 ﻿using KeyHouse.container;
+using KeyHouse.Migrations;
 using KeyHouse.Models.Entities;
 using KeyHouse.ModelView;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static KeyHouse.Models.Enums;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace KeyHouse.Services
@@ -151,7 +153,26 @@ namespace KeyHouse.Services
         public List<Units> GetAllUnits()
         {
             List<Units> units = context.Units.Include(a => a.Images).Include(u => u.Blocks).ToList();
-            return units;     
+            return units;
+        }
+
+        public List<Units> GetFilteredUnits(string category, string type)
+        {
+            var query = context.Units.AsQueryable();
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                var propertyCategory = (PropertyCategory)Enum.Parse(typeof(PropertyCategory), category);
+                query = query.Where(u => u.Type_Unit == propertyCategory);
+            }
+
+            if (!string.IsNullOrEmpty(type))
+            {
+                var propertyType = (PropertyType)Enum.Parse(typeof(PropertyType), type);
+                query = query.Where(u => u.Unit_Title == propertyType);
+            }
+
+            return query.ToList();
         }
 
 
