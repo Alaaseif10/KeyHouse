@@ -1,33 +1,28 @@
-﻿@model KeyHouse.Models.Entities.Units
+﻿@model Units;
+
 <section class="py-3 py-md-5">
     <div class="container">
         <div class="bg-light rounded p-3">
             <div class="bg-white rounded p-4" style="border: 1px dashed rgba(0, 185, 142, .3)">
                 <div class="row g-5 align-items-center">
 
-
-
-                    <div id="carousel-@Model.Id" class="carousel slide col-lg-6 wow fadeIn" data-ride="carousel" data-interval="2000">
-
-                        <div class="carousel-inner ">
-                            @if (Model.Images != null)
+                    <div id="carousel-@Model.Id" class="carousel slide" data-ride="carousel" data-interval="2000">
+                        <div class="carousel-inner">
+                            @if (Model.Images != null && Model.Images.Any())
                             {
-                                int index = 0;
-                            @foreach (var image in Model.Images)
+                                for (int i = 0; i < Model.Images.Count(); i++)
                                 {
-                            <div class="carousel-item @(index == 0 ? "active" : "")  position-relative overflow-hidden p-5 pe-0">
-                                <img class="d-block w-100" src="~/unitImages/@image.Img_Path)" alt="@Model.Unit_Title">
-
-                            </div>
-                                    index++;
+                                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                                        <img class="d-block w-100" src="@Url.Content("~/unitImages/" + Model.Images.ElementAt(i).Img_Path)" alt="@Model.Unit_Title">
+                                    </div>
                                 }
                             }
                             else
                             {
- <!-- Fallback if no img are available -->
-                            <div class="carousel-item active">
-                                <img class="d-block w-100" src="/img/default.jpg" alt="No image available">
-                            </div>
+                                <!-- Fallback if no images are available -->
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100" src="/img/default.jpg" alt="No image available">
+                                </div>
                             }
                         </div>
 
@@ -125,13 +120,13 @@
                         <h3>Benefit Services</h3>
                         @foreach (var benefit in Model.BenefitsServices)
                         {
-                        <div class="col-md-6 col-lg-4 wow fadeIn mb-3" data-wow-delay="0.1s">
-                            <div class="bg-light rounded p-2">
-                                <div class="d-flex align-items-center bg-white rounded p-2" style="border: 1px dashed rgba(0, 185, 142, .3)">
-                                    <p>@benefit.BenefitsName</p>
+                            <div class="col-md-6 col-lg-4 wow fadeIn mb-3" data-wow-delay="0.1s">
+                                <div class="bg-light rounded p-2">
+                                    <div class="d-flex align-items-center bg-white rounded p-2" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                                        <p>@benefit.BenefitsName</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
 
                     </div>
