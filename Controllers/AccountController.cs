@@ -1,8 +1,10 @@
 ﻿using KeyHouse.Models.Entities;
 using KeyHouse.ModelView;
+using KeyHouse.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace KeyHouse.Controllers
@@ -159,11 +161,14 @@ namespace KeyHouse.Controllers
                         {
                             await _signInManager.SignInAsync(user, isPersistent: false);
                             if (user is Admin admin)
-                                
+
                                 return RedirectToAction("DashBoard", "Admin");
                             else
-                                return RedirectToAction("Index", "Home");
+                            {
+                                await _userManager.AddToRoleAsync(user, "Users");
 
+                                return RedirectToAction("Index", "Home");
+                            }
                         }
                         else
                         {
@@ -188,6 +193,12 @@ namespace KeyHouse.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+        public IActionResult UserProfile()
+        {
+            var result = _signInManager.UserManager.Users.FirstOrDefault() as Users;
+
+            return View();
         }
     }
 }

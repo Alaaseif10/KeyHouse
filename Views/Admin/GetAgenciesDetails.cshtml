@@ -39,6 +39,7 @@
                             {
                                 <a class="btn btn-outline-success" href="@Url.Action("ApproveAgency", "Admin", new { agencyId = Model.Id })">Approve </a>
                                 <a class="btn btn-outline-danger" href="@Url.Action("RejectAgency", "Admin", new { agencyId = Model.Id })">Reject </a>
+                                <p>@TempData["ApproveAgency"]</p>
 
                             }
                             @if (Model.AgencyStatus == 3)
@@ -52,13 +53,12 @@
 
                 </div>
             </main>
-            @if (Model.AgencyStatus == 2 || Model.AgencyStatus==3)
-            {
+            
                 <div class="col-12">
                     <div class="bg-light rounded h-100 p-4">
                         <h2 class="mb-4">Agency Contracts</h2>
                         <div class="table-responsive">
-                            @if (Model.AgencyStatus == 3){
+                            @if (Model.AgencyStatus != 2){
                             <a class="btn btn-outline-warning" href="@Url.Action("AddContract", "Admin", new { agencyId = Model.Id })" id="AddContract">+</a>
                             <p>@TempData["Messag"]</p>
                             }
@@ -86,10 +86,10 @@
 
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
-            }
         </div>
     </div>
 </section>
