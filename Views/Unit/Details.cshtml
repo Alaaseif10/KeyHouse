@@ -41,7 +41,7 @@
                 <div class="card-body">
                     <div class="row">
                         <h1>@Model.Price <span class="text-primary">EGP</span></h1>
-                        <p><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Blocks.Block_Name</p>
+                        <p><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Blocks?.Block_Name</p>
 
                         <div class="d-flex gap-5 mb-3">
                             <Large class="flex-fill   py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>@Model.Area</Large>

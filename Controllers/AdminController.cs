@@ -13,7 +13,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace KeyHouse.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
 
@@ -73,7 +73,7 @@ namespace KeyHouse.Controllers
 
             // Use X.PagedList to paginate the data
             var pagedData = Units.ToPagedList(pageNumber, pageSize);
-            
+
             return View(pagedData);
 
         }
@@ -94,7 +94,7 @@ namespace KeyHouse.Controllers
                     PhoneNumber = user.PhoneNumber,
                     Creation_date = user.Creation_date,
                     status = user.status,
-                    AgencyName = user is Agencies agencies == true ? agencies.AgencyName:null
+                    AgencyName = user is Agencies agencies == true ? agencies.AgencyName : null
                 };
                 mappedRes.Add(newuser);
             }
@@ -129,18 +129,18 @@ namespace KeyHouse.Controllers
             {
                 ContractRepo contractRepo = new ContractRepo(_context);
 
-              
+
                 AgencyRepo AgencyRepository = new AgencyRepo(_context);
                 Agencies Agencies = AgencyRepository.GetAgencyById(contract.AgencyID);
                 Contracts newContract = new Contracts();
                 newContract.Contract_Name = contract.Contract_Name;
                 newContract.Start_date = contract.Start_date;
-                newContract.End_date= contract.End_date;
+                newContract.End_date = contract.End_date;
                 newContract.Agencies = Agencies;
                 int res = contractRepo.createContact(newContract);
                 if (res != 0)
                 {
-                    return RedirectToAction("GetAgenciesDetails","Admin", new { id = contract.AgencyID });
+                    return RedirectToAction("GetAgenciesDetails", "Admin", new { id = contract.AgencyID });
 
                 }
 
@@ -151,13 +151,21 @@ namespace KeyHouse.Controllers
         public IActionResult ApproveAgency(string AgencyID)
         {
             AgencyRepo AgencyRepository = new AgencyRepo(_context);
-            AgencyRepository.EditAgencyStatus(AgencyID,3);
+            ContractRepo contractRepo = new ContractRepo(_context);
+
+            Contracts contractres = contractRepo.getContractByAgencyID(AgencyID);
+            if (contractres == null)
+            {
+                TempData["ApproveAgency"] = "You can't Aprove Agency before Adding Active Contract ";
+                return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
+            }
+            AgencyRepository.EditAgencyStatus(AgencyID, 3);
             return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
         }
         public IActionResult RejectAgency(string AgencyID)
         {
             AgencyRepo AgencyRepository = new AgencyRepo(_context);
-            AgencyRepository.EditAgencyStatus(AgencyID,2);
+            AgencyRepository.EditAgencyStatus(AgencyID, 2);
             return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
         }
 
