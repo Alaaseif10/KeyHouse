@@ -194,11 +194,16 @@ namespace KeyHouse.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-        public IActionResult UserProfile()
+        public async Task<IActionResult> UserProfile()
         {
-            var result = _signInManager.UserManager.Users.FirstOrDefault() as Users;
+            if (_signInManager.IsSignedIn(User))
+            {
+                var currentUser = await _userManager.GetUserAsync(User) as Users;
+                // Access properties of currentUser here
 
-            return View();
+                return View(currentUser);
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

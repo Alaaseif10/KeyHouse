@@ -31,12 +31,12 @@ namespace KeyHouse.Controllers
             UnitRepo unit = new UnitRepo(_context);
             if (_signInManager.IsSignedIn(User))
             {
-                var currentUser =  await _userManager.GetUserAsync(User) as Agencies;
+                var currentUser = await _userManager.GetUserAsync(User) as Agencies;
                 // Access properties of currentUser here
                 var props = unit.getAllUnitsByAgency(currentUser.Id);
                 return View("AgencyDashBoard", props);
             }
-            return RedirectToAction ("Index","Home");
+            return RedirectToAction("Index", "Home");
 
 
         }
@@ -87,7 +87,7 @@ namespace KeyHouse.Controllers
             ViewBag.SelectedServices = oldProp.SelectedServices;
             return View("editProp", oldProp);
         }
-        public IActionResult saveAfterEdit( UnitsEditDetailsModelView UnitAfterEdit)
+        public IActionResult saveAfterEdit(UnitsEditDetailsModelView UnitAfterEdit)
         {
             UnitRepo unit = new UnitRepo(_context);
             if (ModelState.IsValid)
@@ -125,6 +125,18 @@ namespace KeyHouse.Controllers
             UnitRepo unit = new UnitRepo(_context);
             unit.deleteImg(imagePath);
             return Json(new { success = true, message = "Image deleted successfully." });
+        }
+
+        public async Task<IActionResult> AgencyProfile()
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                var currentUser = await _userManager.GetUserAsync(User) as Users;
+                // Access properties of currentUser here
+
+                return View(currentUser);
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

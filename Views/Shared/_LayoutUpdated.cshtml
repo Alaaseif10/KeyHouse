@@ -76,7 +76,6 @@
 
                     </a>
 
-                    <a class="nav-link logout-link" asp-area="" asp-controller="Account" asp-action="Logout"> Logout</a>
                     @if (User.IsInRole("Agencies"))
                     {
                         <ul class="navbar-nav ms-auto">
@@ -86,7 +85,7 @@
                                     <img src="/img/profile-user.png" class="rounded-circle" alt="Profile Icon" style="width: 40px; height: 40px;">
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                                    <li><a class="dropdown-item" href="#">Your Profile</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="agency" asp-action="AgencyProfile">Your Profile</a></li>
                                     <li><a class="dropdown-item" href="/agency/addProp">Add Property</a></li>
                                     <li><a class="dropdown-item" href="/agency/Dashboard">Your Dashboaed</a></li>
                                     <li><hr class="dropdown-divider"></li>
