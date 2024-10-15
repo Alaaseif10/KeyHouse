@@ -1,8 +1,10 @@
 ﻿using KeyHouse.container;
+using KeyHouse.Migrations;
 using KeyHouse.Models.Entities;
 using KeyHouse.ModelView;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static KeyHouse.Models.Enums;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace KeyHouse.Services
@@ -129,21 +131,7 @@ namespace KeyHouse.Services
 
 
         }
-        /// <summary>
-        ///  Get All Unit By Fiter
-        /// </summary>
-        /// <param name="Funits"></param>
-        /// <returns></returns>
-        public List<Units> GetAllUnits(Units F_units)
-        {
-
-            List<Units> units = context.Units
-            .Where(u => u.Equals(F_units) &&
-             u.Agencies.Contracts.Any(c => c.End_date > u.Added_Date))
-            .ToList();
-            return units;
-        }
-
+       
         /// <summary>
         /// GET ALL UNITS
         /// </summary>
@@ -151,7 +139,39 @@ namespace KeyHouse.Services
         public List<Units> GetAllUnits()
         {
             List<Units> units = context.Units.Include(a => a.Images).Include(u => u.Blocks).ToList();
-            return units;     
+            return units;
+        }
+
+        public List<Units> GetFilteredUnits(string category, string type, int area1 ,int area2, int price1,int price2)
+        {
+            var query = context.Units.AsQueryable();
+
+           
+            if (!string.IsNullOrEmpty(category))
+            {
+                var propertyCategory = (PropertyCategory)Enum.Parse(typeof(PropertyCategory), category);
+                query = query.Where(u => u.Type_Unit == propertyCategory);
+            }
+
+            if (!string.IsNullOrEmpty(type))
+            {
+                var propertyType = (PropertyType)Enum.Parse(typeof(PropertyType), type);
+                query = query.Where(u => u.Unit_Title == propertyType);
+            }
+            if (area1 > 0 && area2>0 )
+            {
+                query = query.Where(u => u.Area >= area1 && u.Area <= area2 );
+            }
+            
+            if (price1 > 0 && price2 >0)
+            {
+
+                query = query.Where(u => u.Price >= price1 && u.Area <= price2);
+            }
+          
+
+
+            return query.ToList();
         }
 
 
