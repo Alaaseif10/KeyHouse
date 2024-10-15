@@ -16,12 +16,8 @@ namespace KeyHouse.Services
         {
             context = _context;
         }
-        #region IED
 
-        /// <summary>
-        /// Insert Unit
-        /// </summary>
-        /// <param name="units"></param>
+        // agencyDashboard Part
         public void InsertUnits(UnitsDetailsModelView Unit, Agencies Agency)
         {
 
@@ -52,7 +48,7 @@ namespace KeyHouse.Services
                 {
                     var service = context.BenefitsServices.Find(serviceId);
                     InsertedUnit.BenefitsServices.Add(service);
-                    
+
                 }
             }
 
@@ -60,7 +56,7 @@ namespace KeyHouse.Services
             {
                 foreach (var Img in Unit.Images)
                 {
-                    var fileName = Img.FileName;
+                    var fileName = $"{Guid.NewGuid()}_{Img.FileName}";
                     var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/unitImages", fileName);
                     //// Save the file to the path
                     using (var stream = new FileStream(imagePath, FileMode.Create))
@@ -68,59 +64,131 @@ namespace KeyHouse.Services
                         Img.CopyToAsync(stream);
                     }
 
-                    InsertedUnit.Images.Add(new Images 
-                    { Img_Path = $"/unitImages/{fileName}", Units = InsertedUnit });
+                    InsertedUnit.Images.Add(new Images
+                    { Img_Path = $"{fileName}", Units = InsertedUnit });
                 }
             }
 
             InsertedUnit.Agencies = Agency;
             context.Units.Add(InsertedUnit);
             context.SaveChanges();
-            
+
         }
-        /// <summary>
-        ///  Edit Unit
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="units"></param>
-        public void EditUnits(int id , Units units)
+        public void EditUnits(int id, UnitsEditDetailsModelView units)
         {
-            Units Ounits = context.Units.SingleOrDefault(u => u.Id == id);
+            Units Ounits = context.Units.Include(b => b.BenefitsServices).SingleOrDefault(u => u.Id == id);
+            var result = Ounits.BenefitsServices.Select(s => s.Id).ToList();
             Ounits.Unit_Title = units.Unit_Title;
             Ounits.Type_Rent = units.Type_Rent;
             Ounits.Type_Unit = units.Type_Unit;
             Ounits.Unit_Description = units.Unit_Description;
-            Ounits.Status = units.Status;
             Ounits.Num_Rooms = units.Num_Rooms;
             Ounits.Num_Bathrooms = units.Num_Bathrooms;
             Ounits.Area = units.Area;
             Ounits.Price = units.Price;
             Ounits.Under_constracting_Status = units.Under_constracting_Status;
             Ounits.Furnishing = units.Furnishing;
-            Ounits.Added_Date = units.Added_Date;
-            context.Units.Update(Ounits);
+            Ounits.Blocks = context.Blocks.SingleOrDefault(s => s.Id == units.BlockId);
+
+            foreach (var serviceId in units.SelectedServices)
+            {
+                if (result.Contains(serviceId))
+                { }
+                else
+                {
+                    var service = context.BenefitsServices.Find(serviceId);
+                    Ounits.BenefitsServices.Add(service);
+
+                }
+
+            }
+            if (units.Images != null)
+            {
+                foreach (var Img in units.Images)
+                {
+                    var fileName = $"{Guid.NewGuid()}_{Img.FileName}"; ;
+                    var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/unitImages", fileName);
+                    using (var stream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        Img.CopyToAsync(stream);
+                    }
+                    Ounits.Images.Add(new Images
+                    { Img_Path = $"{fileName}", Units = Ounits });
+                }
+            }
             context.SaveChanges();
         }
-        /// <summary>
-        /// Delete Unit
-        /// </summary>
-        /// <param name="id"></param>
         public void DeleteUnits(int id)
         {
-            context.Remove(context.Units.Single(u => u.Id == id));
+            var result = context.Units.Include(i => i.Images).Include(b => b.BenefitsServices).Include(s => s.Interests).SingleOrDefault(u => u.Id == id);
+            var images = context.Images.Include(u => u.Units).SingleOrDefault(i => i.Units.Id == id);
+            context.Remove(images);
+            context.Remove(result);
             context.SaveChanges();
         }
-        #endregion
+        public List<AgencyDashboardViewModel> getAllUnitsByAgency(string AgencyId)
+        {
+            var units = context.Units.Include(i => i.Images).Include(b => b.BenefitsServices)
+                       .Include(t => t.Interests).Include(s => s.Agencies)
+                        .Where(u => u.Agencies.Id == AgencyId).Select(p => new AgencyDashboardViewModel
+                        {
+                            id = p.Id,
+                            title = ((PropertyType)p.Unit_Title).ToString(),
+                            saleType = ((PropertySellType)p.Type_Rent).ToString(),
+                            location = (p.Blocks.Cities.Governments.Government_Name) + ", " + (p.Blocks.Cities.City_Name) + ", " + (p.Blocks.Block_Name),
+                            price = p.Price,
+                            status = p.Status,
+                            InterestedUsers = p.Interests.Select(l => l.Users).ToList()
+                        }).ToList();
+            return units;
+        }
+        public void UpdateUnitStatus(int propId, int updatedStatus)
+        {
+            var oldUnit = context.Units.SingleOrDefault(d => d.Id == propId);
+            if (oldUnit != null)
+            {
+                oldUnit.Status = updatedStatus;
+            }
+            context.SaveChanges();
+        }
+        public void deleteImg(string path)
+        {
+            var result = context.Images.SingleOrDefault(i => i.Img_Path == path);
+            context.Remove(result);
+            context.SaveChanges();
+        }
+        public UnitsEditDetailsModelView GetUnitByIdDashboard(int id)
+        {
+            var oldProp = context.Units.Include(b => b.Blocks).Include(i => i.Images).Include(b => b.BenefitsServices).SingleOrDefault(u => u.Id == id);
+
+            var PropDetails = new UnitsEditDetailsModelView
+            {
+                UnitId = id,
+                Unit_Title = oldProp.Unit_Title,
+                Type_Rent = oldProp.Type_Rent,
+                Type_Unit = oldProp.Type_Unit,
+                Under_constracting_Status = oldProp.Under_constracting_Status,
+                Unit_Description = oldProp.Unit_Description,
+                Num_Rooms = oldProp.Num_Rooms,
+                Num_Bathrooms = oldProp.Num_Bathrooms,
+                Price = oldProp.Price,
+                Area = oldProp.Area,
+                Furnishing = oldProp.Furnishing,
+                BlockId = oldProp.Blocks.Id,
+                CityId = context.Blocks.Include(c => c.Cities).Where(b => b.Id == oldProp.Blocks.Id)
+               .Select(b => b.Cities.Id).SingleOrDefault(),
+                GovernmentId = context.Blocks.Include(c => c.Cities).ThenInclude(g => g.Governments).Where(b => b.Id == oldProp.Blocks.Id)
+                .Select(b => b.Cities.Governments.Id).SingleOrDefault(),
+                SelectedServices = oldProp.BenefitsServices.Select(b => b.Id).ToList(),
+                ExistingImages = oldProp.Images.Select(i => i.Img_Path).ToList()
+            };
+            return PropDetails;
+
+        }
+
 
         //--------------------------------------
 
-        #region Searching
-
-        /// <summary>
-        /// retun One Unit
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public Units GetUnitById(int id)
         {
             /*return context.Units.SingleOrDefault(u => u.Id == id ).;
@@ -131,17 +199,11 @@ namespace KeyHouse.Services
 
 
         }
-       
-        /// <summary>
-        /// GET ALL UNITS
-        /// </summary>
-        /// <returns></returns>
         public List<Units> GetAllUnits()
         {
             List<Units> units = context.Units.Include(a => a.Images).Include(u => u.Blocks).ToList();
             return units;
         }
-
         public List<Units> GetFilteredUnits(string category, string type, int area1 ,int area2, int price1,int price2)
         {
             var query = context.Units.AsQueryable();
@@ -175,6 +237,6 @@ namespace KeyHouse.Services
         }
 
 
-        #endregion
+        
     }
 }
