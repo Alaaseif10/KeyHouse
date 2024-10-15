@@ -8,26 +8,37 @@ using KeyHouse.ModelView;
 using KeyHouse.container;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Client;
 
 namespace KeyHouse.Controllers
 {
+    [Authorize(Roles = "Agencies")]
     public class AgencyController : Controller
     {
         private readonly KeyHouseDB _context;
         SignInManager<Users> _signInManager;
-
-        public AgencyController(KeyHouseDB context, SignInManager<Users> signInManager)
+        UserManager<Users> _userManager;
+        public AgencyController(KeyHouseDB context, UserManager<Users> userManager, SignInManager<Users> signInManager)
         {
             _context = context;
+            _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
             UnitRepo unit = new UnitRepo(_context);
-            var agency = _signInManager.UserManager.Users.FirstOrDefault() as Agencies;
-            var props = unit.getAllUnitsByAgency(agency.Id);
-            return View("AgencyDashBoard", props);
+            if (_signInManager.IsSignedIn(User))
+            {
+                var currentUser =  await _userManager.GetUserAsync(User) as Agencies;
+                // Access properties of currentUser here
+                var props = unit.getAllUnitsByAgency(currentUser.Id);
+                return View("AgencyDashBoard", props);
+            }
+            return RedirectToAction ("Index","Home");
+
+
         }
         public IActionResult addProp()
         {
@@ -43,14 +54,19 @@ namespace KeyHouse.Controllers
             #endregion
             return View("AddProp");
         }
-        public IActionResult SaveProp(UnitsDetailsModelView Unit)
+        public async Task<IActionResult> SaveProp(UnitsDetailsModelView Unit)
         {
             UnitRepo unit = new UnitRepo(_context);
             if (ModelState.IsValid)
             {
-                var result = _signInManager.UserManager.Users.FirstOrDefault() as Agencies;
-                unit.InsertUnits(Unit, result);
-                return RedirectToAction("Dashboard");
+                if (_signInManager.IsSignedIn(User))
+                {
+                    Agencies currentUser = await _userManager.GetUserAsync(User) as Agencies;
+                    // Access properties of currentUser here
+                    //var result = _signInManager.UserManager.Users.FirstOrDefault() as Agencies;
+                    unit.InsertUnits(Unit, currentUser);
+                    return RedirectToAction("Dashboard");
+                }
             }
             return View("addProp");
         }
@@ -71,12 +87,12 @@ namespace KeyHouse.Controllers
             ViewBag.SelectedServices = oldProp.SelectedServices;
             return View("editProp", oldProp);
         }
-        public IActionResult saveAfterEdit(int propId, UnitsEditDetailsModelView UnitAfterEdit)
+        public IActionResult saveAfterEdit( UnitsEditDetailsModelView UnitAfterEdit)
         {
             UnitRepo unit = new UnitRepo(_context);
             if (ModelState.IsValid)
             {
-                unit.EditUnits(propId, UnitAfterEdit);
+                unit.EditUnits(UnitAfterEdit);
 
 
                 return RedirectToAction("Dashboard");

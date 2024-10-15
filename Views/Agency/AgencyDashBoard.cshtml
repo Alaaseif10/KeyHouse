@@ -54,16 +54,18 @@
                                                 }
                                             </td>
                                             <td>
-                                                <input type="checkbox" class="status-checkbox" data-id="@prop.id" @(prop.status != 1 ? "checked disabled" : "") /> 
+                                                <input type="checkbox" class="status-checkbox"  data-id="@prop.id" @(prop.status != 1 ? "checked disabled" : "") /> 
                                                 <label>Is Sold/Is Rented</label>
                                           
                                             </td>
                                             <td>
                                   @*               <a href="#" class="btn btn-sm btn-success">
                                                     <i class="fas fa-eye"></i> </a> *@
-                                                <a asp-controller="Agency" asp-action="EditProp" asp-route-id="@prop.id" class="btn btn-sm btn-primary">
+                                                @* asp-controller="Agency" asp-action="EditProp" asp-route-id="@prop.id" *@
+                                                <a href="@Url.Action("EditProp", "Agency", new { unitId = prop.id })" class="btn btn-sm btn-primary">
                                                     <i class="fas fa-edit"></i> </a>
-                                                <a asp-controller="Agency" asp-action="DeleteProp" asp-route-id="@prop.id" class="btn btn-sm btn-danger">
+                                                @* asp-controller="Agency" asp-action="DeleteProp" asp-route-id="@prop.id" *@
+                                                <a href="@Url.Action("DeleteProp", "Agency", new { PropId = prop.id })" class="btn btn-sm btn-danger">
                                                     <i class="fas fa-trash"></i> </a>
                                             </td>
                                         </tr>
@@ -81,6 +83,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).on('change', '.status-checkbox', function () {
+        debugger;
         var propertyId = $(this).data('id');
         console.log("Property ID:", propertyId);
         var newStatus = confirm(" You need to mark this property as Sold? Press OK for Sold, Cancel for Rented.") ? 2 : 3;
@@ -89,7 +92,7 @@
             url: '@Url.Action("UpdatePropertyStatus", "Agency")',
             type: 'POST',
             data: {
-                id: propertyId,
+                propId: propertyId,
                 status: newStatus
             },
             success: function (response) {

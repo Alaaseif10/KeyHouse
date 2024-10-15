@@ -74,9 +74,9 @@ namespace KeyHouse.Services
             context.SaveChanges();
 
         }
-        public void EditUnits(int id, UnitsEditDetailsModelView units)
+        public void EditUnits(UnitsEditDetailsModelView units)
         {
-            Units Ounits = context.Units.Include(b => b.BenefitsServices).SingleOrDefault(u => u.Id == id);
+            Units Ounits = context.Units.Include(b => b.BenefitsServices).SingleOrDefault(u => u.Id == units.UnitId);
             var result = Ounits.BenefitsServices.Select(s => s.Id).ToList();
             Ounits.Unit_Title = units.Unit_Title;
             Ounits.Type_Rent = units.Type_Rent;
@@ -121,8 +121,12 @@ namespace KeyHouse.Services
         public void DeleteUnits(int id)
         {
             var result = context.Units.Include(i => i.Images).Include(b => b.BenefitsServices).Include(s => s.Interests).SingleOrDefault(u => u.Id == id);
-            var images = context.Images.Include(u => u.Units).SingleOrDefault(i => i.Units.Id == id);
-            context.Remove(images);
+            var images = context.Images.Include(u => u.Units).Where(i => i.Units.Id == id);
+            foreach (var item in images)
+            {
+                context.Remove(item);
+
+            }
             context.Remove(result);
             context.SaveChanges();
         }
