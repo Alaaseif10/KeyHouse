@@ -131,7 +131,32 @@ namespace KeyHouse.Services
 
 
         }
-       
+
+        public void SetInterest(int unitId, Users users)
+        {
+            var Interest = new Interest
+            {
+                UnitsId =unitId ,
+                UsersId = users.Id ,
+                SuccessfulContact = true ,
+                Interest_AddedDate = DateTime.Now,
+
+            };
+
+            context.Interest.Add(Interest);
+            context.SaveChanges();
+
+
+        }
+
+        public Boolean IsUserInterestedBefore(string userId, int unitId)
+        {
+            var result = context.Interest.SingleOrDefault(i=>i.UsersId == userId && i.UnitsId==unitId) ;
+            return result == null;
+
+        }
+
+
         /// <summary>
         /// GET ALL UNITS
         /// </summary>
