@@ -1,8 +1,10 @@
 ﻿using KeyHouse.Models.Entities;
 using KeyHouse.ModelView;
+using KeyHouse.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace KeyHouse.Controllers
@@ -62,7 +64,7 @@ namespace KeyHouse.Controllers
         public async Task<IActionResult> RegisterAgency(RegisterAgencyViewModel newUser)
         {
 
-            var fileName = newUser.logo.FileName;
+            var fileName = $"{Guid.NewGuid()}_{newUser.logo.FileName}";
             var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/logo", fileName);
             //// Save the file to the path
             using (var stream = new FileStream(imagePath, FileMode.Create))
@@ -82,7 +84,7 @@ namespace KeyHouse.Controllers
             user.AgencyDescription = newUser.AgencyDescription;
             user.NumCompany = newUser.NumCompany;
             user.AgencyStatus = 1;
-            user.logo = $"/logo/{fileName}";
+            user.logo = $"{fileName}";
             IdentityResult result = await _userManager.CreateAsync(user, newUser.Password);
             if (result.Succeeded)
             {
@@ -159,11 +161,14 @@ namespace KeyHouse.Controllers
                         {
                             await _signInManager.SignInAsync(user, isPersistent: false);
                             if (user is Admin admin)
-                                
+
                                 return RedirectToAction("DashBoard", "Admin");
                             else
-                                return RedirectToAction("Index", "Home");
+                            {
+                                await _userManager.AddToRoleAsync(user, "Users");
 
+                                return RedirectToAction("Index", "Home");
+                            }
                         }
                         else
                         {
@@ -187,6 +192,17 @@ namespace KeyHouse.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> UserProfile()
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                var currentUser = await _userManager.GetUserAsync(User) as Users;
+                // Access properties of currentUser here
+
+                return View(currentUser);
+            }
             return RedirectToAction("Index", "Home");
         }
     }

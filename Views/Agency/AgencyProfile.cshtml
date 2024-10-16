@@ -1,0 +1,22 @@
+﻿@model KeyHouse.Models.Entities.Agencies
+<section>
+    <div class="container-xxl py-5">
+        <div class="card mx-auto" style="width: 35rem; margin:5px;align-items:center">
+            <div class="wow fadeInUp" data-wow-delay="0.5s">
+                <img src="~/logo/@Model.logo" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <h5 class="mb-0">AgencyName :  @Model.AgencyName</h5>
+                <br />
+                <p> <i class="bi bi-envelope-fill"></i> @Model.Email</p>
+                <p> <i class="bi bi-telephone-fill"></i> @Model.PhoneNumber</p>
+                <p> Description: @Model.AgencyDescription</p>
+                <p> Commercial Register: @Model.NumCompany</p>
+                <p> Status: @(Model.AgencyStatus == 1 ? "Pending" : Model.AgencyStatus == 2 ? "Rejected" : Model.AgencyStatus == 3 ? "Approved" : "Not Defined")</p>
+
+
+                <h6 class="mb-0 font-weight-light">To Change Any Data Kindly Contact IT Adminstrator</h6>
+            </div>
+        </div>
+    </div>
+</section>

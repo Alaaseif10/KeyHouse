@@ -3,8 +3,9 @@ using static KeyHouse.Models.Enums;
 
 namespace KeyHouse.ModelView
 {
-    public class UnitsDetailsModelView
+    public class UnitsEditDetailsModelView
     {
+        public int UnitId { get; set; }
         public PropertyType Unit_Title { get; set; } // flat or villa or ....
         public PropertySellType Type_Rent { get; set; } // rent or sell  ....
         public PropertyCategory Type_Unit { get; set; } // skanie or edare  ....
@@ -26,11 +27,8 @@ namespace KeyHouse.ModelView
 
         // to list ids of selected services
         public List<int> SelectedServices { get; set; }
-
-        [Required(ErrorMessage = "Images is required.")]
-        public List<IFormFile> Images { get; set; }
-
-        //public List<string> ExistingImages { get; set; }  // Store image URLs or paths
+        public List<IFormFile> Images { get; set; } = new List<IFormFile>();
+        public List<string> ExistingImages { get; set; } = new List<string>();// Store image URLs or paths
 
     }
 }

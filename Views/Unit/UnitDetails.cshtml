@@ -2,57 +2,78 @@
 
 <section class="py-3 py-md-5">
     <div class="container">
-        <div class="bg-light rounded p-3">
-            <div class="bg-white rounded p-4" style="border: 1px dashed rgba(0, 185, 142, .3)">
-                <div class="row g-5 align-items-center">
+        <div class="bg-light rounded p-3  col-12 mb-3 ">
+            <div class="row  bg-white rounded g-0 " style="border: 10px;">
+                <div class="col-lg-8 wow fadeIn  " data-wow-delay="0.1s">
+                    <div class="position-relative overflow-hidden  pe-0  me-5">
 
-                    <div id="carousel-@Model.Id" class="carousel slide" data-ride="carousel" data-interval="2000">
-                        <div class="carousel-inner">
-                            @if (Model.Images != null && Model.Images.Any())
-                            {
-                                for (int i = 0; i < Model.Images.Count(); i++)
+                        <div id="carousel-@Model.Id" class="carousel slide" data-ride="carousel" data-interval="2000">
+                            <div class="carousel-inner">
+                                @if (Model.Images != null)
                                 {
-                                    <div class="carousel-item @(i == 0 ? "active" : "")">
-                                        <img class="d-block w-100" src="@Url.Content("~/unitImages/" + Model.Images.ElementAt(i).Img_Path)" alt="@Model.Unit_Title">
+                                    int i = 0;
+                                    @foreach (var img in Model.Images)
+                                    {
+                                        <div class="carousel-item @(i == 0 ? "active" : "")">
+
+                                            <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image" href="@Url.Content("~/unitImages/" + img.Img_Path)">
+                                                <img class="d-block w-100 h-100 " src="@Url.Content("~/unitImages/" + img.Img_Path)" alt="@Model.Unit_Title" style="border-top-left-radius: 7px;border-bottom-left-radius: 8px;">
+                                            </a>
+                                        </div>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <!-- Fallback if no images are available -->
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100 h-100" src="/img/default.jpg" alt="No image available">
                                     </div>
                                 }
-                            }
-                            else
-                            {
-                                <!-- Fallback if no images are available -->
-                                <div class="carousel-item active">
-                                    <img class="d-block w-100" src="/img/default.jpg" alt="No image available">
-                                </div>
-                            }
-                        </div>
-
-                        <!-- Carousel controls -->
-                        <a class="carousel-control-prev" href="#carousel-@Model.Id" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carousel-@Model.Id" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-
-
-                    <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="team-item rounded overflow-hidden">
-                                <div class="position-relative">
-                                    <img class="img-fluid" src="img/team-1.jpg" alt="Agency Image">
-                                </div>
                             </div>
+
+
+                            <!-- Carousel controls -->
+                            <a class="carousel-control-prev" href="#carousel-@Model.Id" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carousel-@Model.Id" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
                         </div>
 
-                        <div class="text-center mb-4">
-                            <h2 class="mb-3">Agency Name</h2>
-                            <p>Agency Description</p>
-                        </div>
-                        <a href="" class="btn btn-primary py-3 px-4 me-2">I'm Interested</a>
                     </div>
+                </div>
+                <div class="col-lg-4 wow fadeIn text-center" data-wow-delay="0.1s">
+
+                    @{
+                        if (Model.Agencies != null)
+                        {
+                            <div class=" position-relative  p-4 pe-0 ">
+                                <img class="d-block w-50 overflow-hidden" src="@Url.Content("~/logo/" + Model.Agencies.logo)" alt="@Model.Agencies.AgencyName" style="margin: 0 auto; border-radius: 50%; width: 200px; height: 200px;">
+
+                            </div>
+                            <div class="text-center mb-5">
+                                <h2 class="mb-3">@Model.Agencies.AgencyName</h2>
+                                <p>@Model.Agencies.AgencyDescription</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <p>Failed To Load Agency  Info.</p>
+
+                        }
+                    }
+
+
+                    @if (ViewBag.CanInterest)
+                    {
+                        <a class="btn btn-primary py-3 px-4  w-75 mb-4" asp-action="Interest" asp-route-id="@Model.Id">I'm Interested</a>
+
+                    }
+
                 </div>
             </div>
         </div>
@@ -62,12 +83,11 @@
                 <div class="card-body">
                     <div class="row">
                         <h1>@Model.Price <span class="text-primary">EGP</span></h1>
-                        <p><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Blocks.Block_Name</p>
-
-                        <div class="d-flex gap-5 mb-3">
-                            <Large class="flex-fill   py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>@Model.Area</Large>
-                            <Medium class="flex-fill   py-2"><i class="fa fa-bed text-primary me-2"></i>@Model.Num_Rooms</Medium>
-                            <Medium class="flex-fill  py-2"><i class="fa fa-bath text-primary me-2"></i>@Model.Num_Bathrooms</Medium>
+                        <p><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Blocks?.Block_Name</p>
+                        <div class="d-flex border-top border-bottom mb-3">
+                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>@Model.Area M</small>
+                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>@Model.Num_Rooms Rooms</small>
+                            <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>@Model.Num_Bathrooms Bath</small>
                         </div>
                         <p class=" mb-4">@Model.Unit_Description</p>
 
