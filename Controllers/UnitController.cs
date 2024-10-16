@@ -22,19 +22,21 @@ namespace KeyHouse.Controllers
         {
             _context = context;
             _signInManager = signInManager;
-            _userManager= userManager;
+            _userManager = userManager;
 
         }
 
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             UnitRepo UnitRepository = new(_context);
             Units Unit = UnitRepository.GetUnitById(id);
             Boolean canInterest = false;
-            if (ModelState.IsValid)
+
+
+            if (_signInManager.IsSignedIn(User))
             {
-                var result = _signInManager.UserManager.Users.FirstOrDefault();
+                var currentUser = await _userManager.GetUserAsync(User) as Users;
                 if (User.Identity.IsAuthenticated && User.IsInRole("Users"))
                 {
                     canInterest = true;
@@ -44,10 +46,14 @@ namespace KeyHouse.Controllers
                     canInterest = false;
                 }
                 if (canInterest)
-                    canInterest = UnitRepository.IsUserInterestedBefore(result.Id, Unit.Id);
+                    canInterest = UnitRepository.IsUserInterestedBefore(currentUser.Id, Unit.Id);
+
             }
+
+            
+
             ViewBag.CanInterest = canInterest;
-            return View("UnitDetails",Unit);
+            return View("UnitDetails", Unit);
         }
 
         public async Task<IActionResult> Interest(int id)
