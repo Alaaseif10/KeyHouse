@@ -72,15 +72,54 @@
                             }
                         </tbody>
                     </table>
+                    <br />
+                    @Html.PagedListPager(Model, page => Url.Action("Users", new { page }), new PagedListRenderOptions
+               {
+                   LiElementClasses = new string[] { "page-item" },
+                   PageClasses = new string[] { "page-link" }
+               })
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid pt-4 px-4">
+            <div class="bg-light text-center rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0"> Agencies Will Be Expired Today</h6>
+                    <a asp-area="" asp-controller="Admin" asp-action="Agencies">Show All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table text-start align-middle table-bordered table-hover mb-0">
+                        <thead>
+                            <tr class="text-dark">
+                                <th scope="col">End Date</th>
+                                <th scope="col">Agency Name</th>
+                                <th scope="col">Commercial Register</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in (List<Contracts>)ViewData["Expired"])
+                            {
+                                <tr>
+                                    <td>@item.End_date</td>
+                                    <td>@item.Agencies.AgencyName</td>
+                                    <td>@item.Agencies.NumCompany</td>
+                                    <td><a class="btn btn-sm btn-primary" href="@Url.Action("GetAgenciesDetails", "Admin", new { id = item.Agencies.Id })">Detail</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <br />
+                    @Html.PagedListPager(Model, page => Url.Action("Users", new { page }), new PagedListRenderOptions
+               {
+                   LiElementClasses = new string[] { "page-item" },
+                   PageClasses = new string[] { "page-link" }
+               })
                 </div>
             </div>
         </div>
     </div>
-    @Html.PagedListPager(Model, page => Url.Action("Users", new { page }), new PagedListRenderOptions
-{
-    LiElementClasses = new string[] { "page-item" },
-    PageClasses = new string[] { "page-link" }
-})
+
 
 </section>
 <script>
