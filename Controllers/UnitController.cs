@@ -32,9 +32,7 @@ namespace KeyHouse.Controllers
             if (ModelState.IsValid)
             {
                 var result = _signInManager.UserManager.Users.FirstOrDefault();
-                Boolean isUser = User.IsInRole("Users");
-
-                if (User.Identity != null && User.Identity.IsAuthenticated && result != null && result.Agencies == null)
+                if (User.Identity.IsAuthenticated && User.IsInRole("Users"))
                 {
                     canInterest = true;
                 }
@@ -46,7 +44,7 @@ namespace KeyHouse.Controllers
                     canInterest = UnitRepository.IsUserInterestedBefore(result.Id, Unit.Id);
             }
             ViewBag.CanInterest = canInterest;
-            return View(Unit);
+            return View("UnitDetails",Unit);
         }
 
         public IActionResult Interest(int id)
