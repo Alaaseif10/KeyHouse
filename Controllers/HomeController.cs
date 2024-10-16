@@ -47,15 +47,15 @@ namespace KeyHouse.Controllers
 
 
                 int pageNumber = page ?? 1;
-                int pageSize = 8;
+                int pageSize = 4;
 
                 // Use X.PagedList to paginate the data
                 var pagedData = units.ToPagedList(pageNumber, pageSize);
-                ViewBag.Units = pagedData;
+              //  ViewBag.Units = pagedData;
                 #endregion
 
 
-                return View("Index");
+                return View(pagedData);
             }
 
         }
