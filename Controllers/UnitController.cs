@@ -17,10 +17,13 @@ namespace KeyHouse.Controllers
     {
         private readonly KeyHouseDB _context;
         SignInManager<Users> _signInManager;
-        public UnitController(KeyHouseDB context, SignInManager<Users> signInManager)
+        UserManager<Users> _userManager;
+        public UnitController(KeyHouseDB context, SignInManager<Users> signInManager, UserManager<Users> userManager)
         {
             _context = context;
             _signInManager = signInManager;
+            _userManager= userManager;
+
         }
 
 
@@ -47,13 +50,14 @@ namespace KeyHouse.Controllers
             return View("UnitDetails",Unit);
         }
 
-        public IActionResult Interest(int id)
+        public async Task<IActionResult> Interest(int id)
         {
             UnitRepo unitRepo = new UnitRepo(_context);
-            if (ModelState.IsValid)
+            if (_signInManager.IsSignedIn(User))
             {
-                var result = _signInManager.UserManager.Users.FirstOrDefault();
-                unitRepo.SetInterest(id, result);
+                var currentUser = await _userManager.GetUserAsync(User) as Users;
+                // Access properties of currentUser here
+                unitRepo.SetInterest(id, currentUser);
             }
             return RedirectToAction("Details", new { id });
 
