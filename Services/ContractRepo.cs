@@ -1,5 +1,6 @@
 ﻿using KeyHouse.container;
 using KeyHouse.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Contracts;
 
 namespace KeyHouse.Services
@@ -52,9 +53,14 @@ namespace KeyHouse.Services
             return keyHouseContext.Contracts.SingleOrDefault(c => c.Id == id);
 
         }
-        public Contracts getContractByAgencyID(string agencyID)
+        public Contracts getActiveContractByAgencyID(string agencyID)
         {
-            return keyHouseContext.Contracts.SingleOrDefault(a => a.Agencies.Id == agencyID && a.End_date > DateTime.Now);
+            return keyHouseContext.Contracts.SingleOrDefault(a => a.End_date.Date > DateTime.Today && a.Agencies.Id == agencyID);
+
+        }
+        public Contracts getExpiredContractByAgencyID(string agencyID)
+        {
+            return keyHouseContext.Contracts.SingleOrDefault(a => a.End_date.Date == DateTime.Today && a.Agencies.Id == agencyID);
 
         }
 

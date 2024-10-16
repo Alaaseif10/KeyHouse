@@ -22,6 +22,12 @@ namespace KeyHouse.services
         {
             return context.Agencies.Where(a => a.AgencyStatus == 1 && a.Creation_date.Date == DateTime.Today).ToList();
         }
+       
+        public List<Contracts> GetExpiredAgencyByToday()
+        {
+            var res = context.Contracts.Where(a => a.End_date.Date == DateTime.Today).Include(a => a.Agencies).Where(c => c.Agencies.AgencyStatus == 3).ToList();
+            return res;
+        }
         public List<Agencies> GetFilteredAgencies(int status)
         {
             return context.Agencies.Where(a => a.AgencyStatus == status).ToList();

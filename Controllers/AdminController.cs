@@ -36,6 +36,7 @@ namespace KeyHouse.Controllers
             ViewBag.Users = users.Count;
             ViewBag.Agency = Agencies.Count;
             ViewBag.Properites = Units.Count;
+            ViewData["Expired"] = AgencyRepository.GetExpiredAgencyByToday().ToList();
             List<Agencies> addedAgenciesToday = AgencyRepository.GetAddedAgencyByToday();
             int pageNumber = page ?? 1;
             int pageSize = 8;
@@ -111,12 +112,12 @@ namespace KeyHouse.Controllers
         {
             ContractRepo contractRepo = new ContractRepo(_context);
 
-            Contracts contractres = contractRepo.getContractByAgencyID(AgencyID);
+            Contracts contractres = contractRepo.getActiveContractByAgencyID(AgencyID);
             if (contractres != null)
             {
+
                 TempData["Messag"] = "You can't create contract while there is one Active";
                 return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
-
             }
             ViewBag.AgencyId = AgencyID;
             return View();
@@ -153,14 +154,26 @@ namespace KeyHouse.Controllers
             AgencyRepo AgencyRepository = new AgencyRepo(_context);
             ContractRepo contractRepo = new ContractRepo(_context);
 
-            Contracts contractres = contractRepo.getContractByAgencyID(AgencyID);
+            Contracts contractres = contractRepo.getActiveContractByAgencyID(AgencyID);
             if (contractres == null)
             {
                 TempData["ApproveAgency"] = "You can't Aprove Agency before Adding Active Contract ";
                 return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
             }
-            AgencyRepository.EditAgencyStatus(AgencyID, 3);
-            return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
+            else
+            {
+                if (contractres.End_date.Date == DateTime.Today)
+                {
+                    TempData["ApproveAgency"] = "You can't Aprove Agency before Adding Active Contract ";
+
+                }
+                else
+                {
+                    AgencyRepository.EditAgencyStatus(AgencyID, 3);
+                }
+                return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
+
+            }
         }
         public IActionResult RejectAgency(string AgencyID)
         {
@@ -174,6 +187,37 @@ namespace KeyHouse.Controllers
             UserRepository userRepository = new UserRepository(_context);
             Admin Admin = userRepository.GetAdmin();
             return View(Admin);
+        }
+
+        public IActionResult SuspendAgency(string AgencyID)
+        {
+            AgencyRepo AgencyRepository = new AgencyRepo(_context);
+            ContractRepo contractRepo = new ContractRepo(_context);
+
+            Contracts contractres = contractRepo.getExpiredContractByAgencyID(AgencyID);
+            if (contractres != null)
+            {
+                if (contractres.End_date.Date == DateTime.Today)
+                {
+                    Contracts Activecontractres = contractRepo.getActiveContractByAgencyID(AgencyID);
+                    if (Activecontractres == null)
+                    {
+
+                        AgencyRepository.EditAgencyStatus(AgencyID, 4);
+                    }
+                    else
+                    {
+                        TempData["SuspendAgency"] = "You can't Suspend Agency With Active Contract ";
+
+                    }
+                }
+                else
+                {
+                    TempData["SuspendAgency"] = "You can't Suspend Agency when End Date is not Today ";
+
+                }
+            }
+            return RedirectToAction("GetAgenciesDetails", "Admin", new { id = AgencyID });
         }
     }
 }

@@ -23,7 +23,7 @@
                             <p> <i class="bi bi-envelope-fill"></i> @item.Email</p>
                             <p> <i class="bi bi-telephone-fill"></i> @item.PhoneNumber</p>
                             <p> Commercial Register: @item.NumCompany</p>
-                            <p class="form-label"> Status: @(item.AgencyStatus == 1 ? "Pending" : item.AgencyStatus == 2 ? "Rejected" : item.AgencyStatus == 3 ? "Approved" : "Not Defined")</p>
+                            <p class="form-label"> Status: @(item.AgencyStatus == 1 ? "Pending" : item.AgencyStatus == 2 ? "Rejected" : item.AgencyStatus == 3 ? "Approved" : item.AgencyStatus == 4 ? "Suspended" : "Not Defined")</p>
                             <a class="btn btn-primary" href="@Url.Action("GetAgenciesDetails", "Admin", new { id = item.Id })">Details</a>
                         </div>
                     </div>

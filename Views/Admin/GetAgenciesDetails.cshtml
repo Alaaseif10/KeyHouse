@@ -34,18 +34,31 @@
 
                         <dt class="col-3">Agency Status:</dt>
                         <dd class="col-9">
-                            @(Model.AgencyStatus == 1 ? "Pending" : Model.AgencyStatus == 2 ? "Rejected" : Model.AgencyStatus == 3 ? "Approved" : "Not Defined")
+                            @(Model.AgencyStatus == 1 ? "Pending" : Model.AgencyStatus == 2 ? "Rejected" : Model.AgencyStatus == 3 ? "Approved" : Model.AgencyStatus == 4? "Suspended": "Not Defined")
                             @if (Model.AgencyStatus == 1)
                             {
-                                <a class="btn btn-outline-success" href="@Url.Action("ApproveAgency", "Admin", new { agencyId = Model.Id })">Approve </a>
-                                <a class="btn btn-outline-danger" href="@Url.Action("RejectAgency", "Admin", new { agencyId = Model.Id })">Reject </a>
+                               
+                               <a class="btn btn-outline-success" href="@Url.Action("ApproveAgency", "Admin", new { agencyId = Model.Id })">Approve </a>
                                 <p>@TempData["ApproveAgency"]</p>
+
+                                <a class="btn btn-outline-danger" href="@Url.Action("RejectAgency", "Admin", new { agencyId = Model.Id })">Reject </a>
+                                <p>@TempData["SuspendAgency"]</p>
 
                             }
                             @if (Model.AgencyStatus == 3)
                             {
                                 <a class="btn btn-outline-danger" href="@Url.Action("RejectAgency", "Admin", new { agencyId = Model.Id })">Reject</a>
+                                <a class="btn btn-outline-warning" href="@Url.Action("SuspendAgency", "Admin", new { agencyId = Model.Id })">Suspend</a>
+                                <p>@TempData["SuspendAgency"]</p>
+
                             }
+                            @if (Model.AgencyStatus == 4)
+                            {
+                                <a class="btn btn-outline-success" href="@Url.Action("ApproveAgency", "Admin", new { agencyId = Model.Id })">Approve </a>
+                                <p>@TempData["ApproveAgency"]</p>
+
+                            }
+                            
                         </dd>
                     </div>
 
